@@ -45,7 +45,9 @@
 	});
 </script>
 
-<p class="m-2 text-lg font-bold">Preview</p>
-<div class="border-2 rounded h-full">
-	<iframe bind:this={iframe} title="preview" sandbox="allow-scripts" width="100%" height="100%" />
-</div>
+<main class="flex flex-col h-full">
+	<p class="m-2 text-lg font-bold">Preview</p>
+	<div class="border-2 rounded grow">
+		<iframe bind:this={iframe} title="preview" sandbox="allow-scripts" width="100%" height="100%" />
+	</div>
+</main>

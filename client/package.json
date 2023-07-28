@@ -41,6 +41,8 @@
 		"ai": "^2.1.25",
 		"monaco-editor": "^0.40.0",
 		"nanoid": "^4.0.2",
-		"openai-edge": "^1.2.1"
+		"openai-edge": "^1.2.1",
+		"pupeteer": "^0.0.1",
+		"puppeteer": "^20.9.0"
 	}
 }
