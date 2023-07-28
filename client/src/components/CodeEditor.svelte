@@ -78,18 +78,10 @@
 </script>
 
 <div>
-	<div>html</div>
-	<div class="container" bind:this={htmlEditorContainer} />
-	<div>css</div>
-	<div class="container" bind:this={cssEditorContainer} />
-	<div>js</div>
-	<div class="container" bind:this={jsEditorContainer} />
+	<p class="m-2 text-lg font-bold">html</p>
+	<div class="container h-48 border-2 rounded" bind:this={htmlEditorContainer} />
+	<p class="m-2 text-lg font-bold">css</p>
+	<div class="container h-48 border-2 rounded" bind:this={cssEditorContainer} />
+	<p class="m-2 text-lg font-bold">js</p>
+	<div class="container h-48 border-2 rounded" bind:this={jsEditorContainer} />
 </div>
-
-<style>
-	.container {
-		width: 100%;
-		height: 200px;
-		margin-bottom: 10px;
-	}
-</style>

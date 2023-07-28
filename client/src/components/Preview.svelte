@@ -1,17 +1,17 @@
 <script>
-  import { onMount, afterUpdate, onDestroy } from 'svelte';    
+	import { onMount, afterUpdate, onDestroy } from 'svelte';
 
-  export let html = '';
-  export let css = '';
-  export let js = '';
+	export let html = '';
+	export let css = '';
+	export let js = '';
 
-  let iframe;
-  let url;
+	let iframe;
+	let url = '';
 
-  console.log(html, css, js);
+	console.log(html, css, js);
 
-  function updateIFrame() {
-    const page = `
+	function updateIFrame() {
+		const page = `
       <!DOCTYPE html>
       <html lang="en">
         <head>
@@ -26,29 +26,26 @@
       </html>
     `;
 
-    const blob = new Blob([page], { type: 'text/html' });
-    url = URL.createObjectURL(blob);
+		const blob = new Blob([page], { type: 'text/html' });
+		url = URL.createObjectURL(blob);
 
-    iframe.src = url;
-  }
+		iframe.src = url;
+	}
 
-  onMount(() => {
-    updateIFrame();
-  });
+	onMount(() => {
+		updateIFrame();
+	});
 
-  afterUpdate(() => {
-    updateIFrame();
-  });
+	afterUpdate(() => {
+		updateIFrame();
+	});
 
-  onDestroy(() => {
-    URL.revokeObjectURL(url);
-  });
+	onDestroy(() => {
+		URL.revokeObjectURL(url);
+	});
 </script>
 
-<iframe
-    bind:this={iframe}
-    title="preview"
-    sandbox="allow-scripts"
-    width="100%"
-    height="100%"
-/>
+<p class="m-2 text-lg font-bold">Preview</p>
+<div class="border-2 rounded h-full">
+	<iframe bind:this={iframe} title="preview" sandbox="allow-scripts" width="100%" height="100%" />
+</div>

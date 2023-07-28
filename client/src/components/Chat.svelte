@@ -1,17 +1,17 @@
 <script>
 	import { useChat } from 'ai/svelte';
+	import Spinner from './Spinner.svelte';
 
 	export let html = '';
 	export let css = '';
 	export let js = '';
-	export let useTailwindcss = false;
+	export let useTailwindcss = true;
 	let simpleInput = '';
 
 	const functionCallHandler = async (chatMessages, functionCall) => {
 		if (functionCall.name === 'get_code') {
 			if (functionCall.arguments) {
 				const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
-				console.log(parsedFunctionCallArguments);
 				html = parsedFunctionCallArguments.html;
 				css = parsedFunctionCallArguments.css;
 				js = parsedFunctionCallArguments.js;
@@ -19,33 +19,65 @@
 		}
 	};
 
-	const { messages, input, handleSubmit } = useChat({
+	const { messages, input, handleSubmit, isLoading } = useChat({
 		api: '/api/completion',
 		experimental_onFunctionCall: functionCallHandler
 	});
 
+	let isLoadingValue = false;
+
+	isLoading.subscribe((value) => {
+		isLoadingValue = value;
+	});
+
 	const handleInputChange = (event) => {
-		// Add your logic here for input change
-		const processedInput = `Create the following component: ${simpleInput}. ${
-			useTailwindcss ? 'Use Tailwindcss' : ''
-		}}`;
+		let processedInput;
+		if (html == '' && css == '' && js == '') {
+			// Add your logic here for input change
+			processedInput = `Create the following component: ${simpleInput}. ${
+				useTailwindcss ? 'Use Tailwindcss' : ''
+			}}`;
+		} else {
+			processedInput = `Update the component with this description: ${simpleInput}. ${
+				useTailwindcss ? 'Use Tailwindcss. ' : ''
+			} Component: ${JSON.stringify({
+				html,
+				css,
+				js
+			})}`;
+		}
+
 		input.set(processedInput);
-		console.log($input);
 	};
 </script>
 
 <main>
-	<form on:submit={handleSubmit}>
+	<form on:submit={handleSubmit} class="flex flex-row items-center">
 		<input
+			class="border-2 border-blue-500 rounded-md p-2 m-4 w-1/2"
 			type="text"
 			bind:value={simpleInput}
 			on:input={handleInputChange}
 			placeholder="Describe your component"
+			disabled={isLoadingValue}
 		/>
-		<button type="submit">Generate</button>
-		<label>
-			<input type="checkbox" bind:checked={useTailwindcss} on:change={handleInputChange} />
-			Use Tailwindcss
-		</label>
+		{#if isLoadingValue}
+			<Spinner />
+		{:else}
+			<button
+				type="submit"
+				class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+				>Generate</button
+			>
+			<label class="inline-flex items-center m-4">
+				<input
+					type="checkbox"
+					bind:checked={useTailwindcss}
+					on:change={handleInputChange}
+					class="form-checkbox h-5 w-5 text-blue-600"
+				/>
+				<span class="ml-2 text-gray-700">Use Tailwindcss</span>
+			</label>
+		{/if}
 	</form>
 </main>
