@@ -3,18 +3,14 @@
 	import { onDestroy, onMount, afterUpdate } from 'svelte';
 	import type * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
-	let htmlEditorContainer: HTMLElement;
-	let cssEditorContainer: HTMLElement;
-	let jsEditorContainer: HTMLElement;
+	let editorContainer: HTMLElement;
+	let editor: Monaco.editor.IStandaloneCodeEditor;
 
 	let monaco: typeof Monaco;
-	let htmlEditor: Monaco.editor.IStandaloneCodeEditor;
-	let cssEditor: Monaco.editor.IStandaloneCodeEditor;
-	let jsEditor: Monaco.editor.IStandaloneCodeEditor;
 
-	export let html = '';
-	export let css = '';
-	export let js = '';
+	export let code = '';
+	export let language = '';
+	export let filename = '';
 
 	async function createEditor(
 		container: HTMLElement,
@@ -45,43 +41,22 @@
 
 		monaco = await loader.init();
 
-		htmlEditor = await createEditor(htmlEditorContainer, html, 'html', 'sample.html');
-		cssEditor = await createEditor(cssEditorContainer, css, 'css', 'sample.css');
-		jsEditor = await createEditor(jsEditorContainer, js, 'javascript', 'sample.js');
+		editor = await createEditor(editorContainer, code, language, filename);
 
-		htmlEditor.onDidChangeModelContent(() => {
-			html = htmlEditor.getValue();
-		});
-
-		cssEditor.onDidChangeModelContent(() => {
-			css = cssEditor.getValue();
-		});
-
-		jsEditor.onDidChangeModelContent(() => {
-			js = jsEditor.getValue();
+		editor.onDidChangeModelContent(() => {
+			code = editor.getValue();
 		});
 	});
 
 	afterUpdate(() => {
 		if (!monaco) return;
-		updateEditorContent(htmlEditor, html);
-		updateEditorContent(cssEditor, css);
-		updateEditorContent(jsEditor, js);
+		updateEditorContent(editor, code);
 	});
 
 	onDestroy(() => {
 		monaco?.editor.getModels().forEach((model) => model.dispose());
-		htmlEditor?.dispose();
-		cssEditor?.dispose();
-		jsEditor?.dispose();
+		editor?.dispose();
 	});
 </script>
 
-<div>
-	<p class="m-2 text-lg font-bold">html</p>
-	<div class="container h-48 border-2 rounded" bind:this={htmlEditorContainer} />
-	<p class="m-2 text-lg font-bold">css</p>
-	<div class="container h-48 border-2 rounded" bind:this={cssEditorContainer} />
-	<p class="m-2 text-lg font-bold">js</p>
-	<div class="container h-48 border-2 rounded" bind:this={jsEditorContainer} />
-</div>
+<div class="container h-48 border-2 rounded" bind:this={editorContainer} />

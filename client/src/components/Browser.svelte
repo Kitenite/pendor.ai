@@ -1,10 +1,28 @@
 <script>
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import Spinner from './Spinner.svelte';
+	import Preview from './Preview.svelte';
+	import CodeEditor from './CodeEditor.svelte';
+	import { CLICK_IDENTIFIER } from '$lib';
 
 	let iframe;
-	let url = '';
+	let url = 'https://tailwindcss.com/';
 	let isLoading = false;
+	let selectedHtml = '';
+
+	onMount(() => {
+		window.addEventListener(
+			'message',
+			function (event) {
+				if (event.data.type === CLICK_IDENTIFIER) {
+					selectedHtml = event.data.data;
+				}
+			},
+			false
+		);
+
+		updateIFrame();
+	});
 
 	const updateIFrame = async () => {
 		if (url === '') {
@@ -25,10 +43,6 @@
 		iframe.src = URL.createObjectURL(blob);
 		isLoading = false;
 	};
-
-	onMount(() => {
-		updateIFrame();
-	});
 </script>
 
 <main class="flex flex-col h-full">
@@ -51,9 +65,13 @@
 		{/if}
 	</form>
 
+	<CodeEditor bind:code={selectedHtml} language="html" filename="sample.html" />
+	<Preview html={selectedHtml} js={''} css={''} />
+
 	<p class="m-2 text-lg font-bold">Browser</p>
 
 	<div class="border-2 rounded grow m-10">
-		<iframe bind:this={iframe} title="preview" sandbox="" width="100%" height="100%" />
+		<!-- prettier-ignore -->
+		<iframe bind:this={iframe} title="preview" sandbox="allow-scripts" width="100%" height="100%"></iframe>
 	</div>
 </main>
