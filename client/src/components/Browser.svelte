@@ -9,13 +9,15 @@
 	let url = 'https://stackoverflow.com/';
 	let isLoading = false;
 	let selectedHtml = '';
+	let selectedCss = '';
 
 	onMount(() => {
 		window.addEventListener(
 			'message',
 			function (event) {
 				if (event.data.type === CLICK_IDENTIFIER) {
-					selectedHtml = event.data.data;
+					selectedHtml = event.data.html;
+					selectedCss = event.data.css;
 				}
 			},
 			false
@@ -66,7 +68,9 @@
 	</form>
 
 	<CodeEditor bind:code={selectedHtml} language="html" filename="sample.html" />
-	<Preview html={selectedHtml} js={''} css={''} />
+	<CodeEditor bind:code={selectedCss} language="css" filename="sample.css" />
+
+	<Preview html={selectedHtml} js={''} css={selectedCss} />
 
 	<p class="m-2 text-lg font-bold">Browser</p>
 

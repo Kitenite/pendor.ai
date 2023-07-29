@@ -56,9 +56,23 @@ export async function GET({ url }) {
                 event.target.style.boxShadow = "";
                 event.target.style.cursor = "";
                 
+                // Get all computed styles of the clicked element
+                const styles = window.getComputedStyle(event.target);
+                let styleString = '';
+                Array.from(styles).forEach(prop => {
+                    styleString += \`\${prop}: \${styles.getPropertyValue(prop)}; \`;
+                });
+
+                // Create an element with ID to attach the styles
+                const elementId = 'clicked-element';
+                event.target.id = elementId;
+                // Wrap the style string in a style tag, specific to that element
+                const styleTag = \`#\${elementId} { \${styleString} }\`;
+    
                 const message = {
                     type: '${CLICK_IDENTIFIER}',
-                    data: event.target.outerHTML
+                    html: event.target.outerHTML,
+                    css: styleTag
                 };
                 window.parent.postMessage(message, '*');
             }, false);
