@@ -6,7 +6,7 @@
 	import { CLICK_IDENTIFIER } from '$lib';
 
 	let iframe;
-	let url = 'https://tailwindcss.com/';
+	let url = 'https://stackoverflow.com/';
 	let isLoading = false;
 	let selectedHtml = '';
 
@@ -70,7 +70,7 @@
 
 	<p class="m-2 text-lg font-bold">Browser</p>
 
-	<div class="border-2 rounded grow m-10">
+	<div class="border-2 rounded h-screen m-10">
 		<!-- prettier-ignore -->
 		<iframe bind:this={iframe} title="preview" sandbox="allow-scripts" width="100%" height="100%"></iframe>
 	</div>
