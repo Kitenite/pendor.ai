@@ -4,6 +4,11 @@ export default {
   theme: {
     extend: {},
   },
+  variants: {
+    extend: {
+      scale: ['active'],
+    }
+  },
   plugins: [],
 }
 

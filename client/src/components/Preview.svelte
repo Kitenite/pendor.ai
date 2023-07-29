@@ -8,6 +8,13 @@
 	let iframe;
 	let url = '';
 	let uuid = '';
+	let saving = false;
+
+	// Used to detect content changes
+	let prevHtml = html;
+	let prevCss = css;
+	let prevJs = js;
+	let hasContentChanged = true;
 
 	function updateIFrame() {
 		const page = `
@@ -39,8 +46,21 @@
 
 		const blob = new Blob([page], { type: 'text/html' });
 		url = URL.createObjectURL(blob);
-		uuid = '';
 		iframe.src = url;
+		uuid = '';
+	}
+
+	// Reactively update iframe when content changes
+	$: {
+		if (html !== prevHtml || css !== prevCss || js !== prevJs) {
+			prevHtml = html;
+			prevCss = css;
+			prevJs = js;
+			hasContentChanged = true;
+			updateIFrame();
+		} else {
+			hasContentChanged = false;
+		}
 	}
 
 	async function uploadComponent() {
@@ -60,13 +80,10 @@
 
 		const respData = await response.json();
 		uuid = respData.uuid;
+		hasContentChanged = false;
 	}
 
 	onMount(() => {
-		updateIFrame();
-	});
-
-	afterUpdate(() => {
 		updateIFrame();
 	});
 
@@ -81,7 +98,11 @@
 		<!-- prettier-ignore -->
 		<iframe bind:this={iframe} title="preview" sandbox="allow-scripts" width="100%" height="100%"></iframe>
 	</div>
-	<button class="m-2 p-2 bg-blue-500 text-white rounded-md" on:click={uploadComponent}
-		>Save component</button
+	<button
+		class="m-2 p-2 rounded-md {hasContentChanged
+			? 'bg-blue-500 text-white'
+			: 'bg-gray-500 text-gray-300 cursor-not-allowed'}"
+		on:click={uploadComponent}
+		disabled={!hasContentChanged}>{hasContentChanged ? 'Save component' : 'Component saved'}</button
 	>
 </main>

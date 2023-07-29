@@ -17,7 +17,6 @@ const saveComponent = async (dataString: JSON, uuid: string | undefined) => {
 
 export async function POST({ request }) {
     const { data, uuid } = await request.json()
-    console.log(data, uuid);
     try {
         const respUuid = await saveComponent(data, uuid);
         const respObj = { uuid: respUuid };
