@@ -3,7 +3,7 @@
 	import Spinner from './Spinner.svelte';
 	import Preview from './Preview.svelte';
 	import CodeEditor from './CodeEditor.svelte';
-	import { CLICK_IDENTIFIER } from '$lib';
+	import { Constants } from '$lib';
 
 	let iframe;
 	let url = 'https://stackoverflow.com/';
@@ -15,7 +15,7 @@
 		window.addEventListener(
 			'message',
 			function (event) {
-				if (event.data.type === CLICK_IDENTIFIER) {
+				if (event.data.type === Constants.CLICK_IDENTIFIER) {
 					selectedHtml = event.data.html;
 					selectedCss = event.data.css;
 				}
@@ -80,6 +80,6 @@
 
 	<div class="border-2 rounded h-screen m-10">
 		<!-- prettier-ignore -->
-		<iframe bind:this={iframe} title="preview" sandbox="allow-scripts" width="100%" height="100%"></iframe>
+		<iframe bind:this={iframe} title="preview" sandbox="allow-scripts allow-same-origin" width="100%" height="100%"></iframe>
 	</div>
 </main>

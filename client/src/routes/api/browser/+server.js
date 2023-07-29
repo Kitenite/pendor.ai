@@ -1,11 +1,59 @@
-
-
-import { CLICK_IDENTIFIER } from '$lib';
 import puppeteer from 'puppeteer';
+
+const embeddedTrackingFunction = () => {
+    const clickHandler = (event) => {
+        event.preventDefault();
+        event.target.style.border = "";
+        event.target.style.backgroundColor = "";
+        event.target.style.outline = "";
+        event.target.style.boxShadow = "";
+        event.target.style.cursor = "";
+        
+        // Get all computed styles of the clicked element
+        const styles = window.getComputedStyle(event.target);
+        let styleString = '';
+        Array.from(styles).forEach(prop => {
+            styleString += `${prop}: ${styles.getPropertyValue(prop)};`;
+        });
+    
+        // Create an element with ID to attach the styles
+        const elementId = 'clicked-element';
+        event.target.id = elementId;
+        // Wrap the style string in a style tag, specific to that element
+        const styleTag = `#${elementId} { ${styleString} }`;
+    
+        const message = {
+            type: 'CLICK_IDENTIFIER', // Has to be a string here, no imports allowed
+            html: event.target.outerHTML,
+            css: styleTag
+        };
+        window.parent.postMessage(message, '*');
+    }
+
+    const mouseoverHandler = (event) => {
+        event.target.style.border = "3px solid red";
+        event.target.style.backgroundColor = "rgba(255, 0, 0, 0.2)";
+        event.target.style.outline = "3px solid red";
+        event.target.style.boxShadow = "0 0 10px red";
+        event.target.style.cursor = "pointer";
+    }
+
+    const mouseoutHandler = (event) => {
+        event.target.style.border = "";
+        event.target.style.backgroundColor = "";
+        event.target.style.outline = "";
+        event.target.style.boxShadow = "";
+        event.target.style.cursor = "";
+    }
+
+    document.addEventListener('click', clickHandler, false);
+    document.addEventListener('mouseover', mouseoverHandler, false);
+    document.addEventListener('mouseout', mouseoutHandler, false);
+}
 
 export async function GET({ url }) {
     const contentUrl = url.searchParams.get('url') ?? 'https://kit.svelte.dev/'
-    const browser = await puppeteer.launch({headless: true});
+    const browser = await puppeteer.launch({headless: "new"});
     const page = await browser.newPage();
 
     // This will store the CSS data
@@ -48,50 +96,7 @@ export async function GET({ url }) {
     const tailwindScript = `<script src="https://cdn.tailwindcss.com"></script>`
     const trackingScript = `
         <script>
-            document.addEventListener('click', function (event) {
-                event.preventDefault();
-                event.target.style.border = "";
-                event.target.style.backgroundColor = "";
-                event.target.style.outline = "";
-                event.target.style.boxShadow = "";
-                event.target.style.cursor = "";
-                
-                // Get all computed styles of the clicked element
-                const styles = window.getComputedStyle(event.target);
-                let styleString = '';
-                Array.from(styles).forEach(prop => {
-                    styleString += \`\${prop}: \${styles.getPropertyValue(prop)}; \`;
-                });
-
-                // Create an element with ID to attach the styles
-                const elementId = 'clicked-element';
-                event.target.id = elementId;
-                // Wrap the style string in a style tag, specific to that element
-                const styleTag = \`#\${elementId} { \${styleString} }\`;
-    
-                const message = {
-                    type: '${CLICK_IDENTIFIER}',
-                    html: event.target.outerHTML,
-                    css: styleTag
-                };
-                window.parent.postMessage(message, '*');
-            }, false);
-
-            document.addEventListener('mouseover', function(event) {
-                event.target.style.border = "3px solid red";
-                event.target.style.backgroundColor = "rgba(255, 0, 0, 0.2)";
-                event.target.style.outline = "3px solid red";
-                event.target.style.boxShadow = "0 0 10px red";
-                event.target.style.cursor = "pointer";
-            }, false);
-
-            document.addEventListener('mouseout', function(event) {
-                event.target.style.border = "";
-                event.target.style.backgroundColor = "";
-                event.target.style.outline = "";
-                event.target.style.boxShadow = "";
-                event.target.style.cursor = "";
-            }, false);
+            (${embeddedTrackingFunction.toString()})();
         </script>
     `;
 
