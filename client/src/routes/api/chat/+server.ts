@@ -38,6 +38,7 @@ const functions: ChatCompletionFunctions[] = [
     }
   }
 ]
+
 export async function POST({ request }) {
   const { messages } = await request.json();
  

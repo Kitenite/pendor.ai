@@ -20,7 +20,7 @@
 	};
 
 	const { messages, input, handleSubmit, isLoading } = useChat({
-		api: '/api/completion',
+		api: '/api/chat',
 		experimental_onFunctionCall: functionCallHandler
 	});
 

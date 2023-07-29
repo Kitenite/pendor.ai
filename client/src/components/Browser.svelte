@@ -80,6 +80,13 @@
 
 	<div class="border-2 rounded h-screen m-10">
 		<!-- prettier-ignore -->
-		<iframe bind:this={iframe} title="preview" sandbox="allow-scripts allow-same-origin" width="100%" height="100%"></iframe>
+		<iframe 
+			bind:this={iframe} 
+			title="preview" 
+			sandbox="allow-scripts allow-same-origin" 
+			scrolling="auto"
+			width="100%" 
+			height="100%"
+		></iframe>
 	</div>
 </main>
