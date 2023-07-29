@@ -12,19 +12,29 @@
 
 	function updateIFrame() {
 		const page = `
-      <!DOCTYPE html>
-      <html lang="en">
-        <head>
-          <script src="https://cdn.tailwindcss.com"></\script>
-          <style>${css || ''}</style>
-        </head>
-        <body>
-          <div id="root" style="padding: 16px;"></div>
-          <script type="text/javascript">${js || ''}</\script>
-          ${html || ''}
-        </body>
-      </html>
-    `;
+			<!DOCTYPE html>
+			<html lang="en">
+				<head>
+					<script src="https://cdn.tailwindcss.com"></\script>
+					<style>${css || ''}</style>
+					<style>
+						html, body {
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						height: 100%;
+						margin: 0;
+						padding: 0;
+						}
+					</style>
+				</head>
+				<body>
+				<div id="root" style="padding: 16px;"></div>
+				<script type="text/javascript">${js || ''}</\script>
+				${html || ''}
+				</body>
+			</html>
+		`;
 
 		const blob = new Blob([page], { type: 'text/html' });
 		url = URL.createObjectURL(blob);

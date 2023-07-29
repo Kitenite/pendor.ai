@@ -4,7 +4,7 @@
 	import TestBrowser from '../../components/TestBrowser.svelte';
 </script>
 
-<main class="flex-grow h-screen w-screen">
+<main class="flex flex-col p-4">
 	<Header />
 	<Browser />
 </main>

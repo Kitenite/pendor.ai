@@ -22,6 +22,11 @@
 		const model = monaco.editor.createModel(code, language, monaco.Uri.file(filename));
 		editor.setModel(model);
 
+		// Prettify on model change originated by the user
+		editor.onDidChangeModelContent(() => {
+			editor.getAction('editor.action.formatDocument')?.run();
+		});
+
 		return editor;
 	}
 
@@ -38,11 +43,8 @@
 	onMount(async () => {
 		const monacoEditor = await import('monaco-editor');
 		loader.config({ monaco: monacoEditor.default });
-
 		monaco = await loader.init();
-
 		editor = await createEditor(editorContainer, code, language, filename);
-
 		editor.onDidChangeModelContent(() => {
 			code = editor.getValue();
 		});
@@ -59,4 +61,5 @@
 	});
 </script>
 
+<p class="m-2 text-lg font-bold">{language}</p>
 <div class="container h-48 border-2 rounded" bind:this={editorContainer} />

@@ -66,11 +66,15 @@
 			>
 		{/if}
 	</form>
-
-	<CodeEditor bind:code={selectedHtml} language="html" filename="sample.html" />
-	<CodeEditor bind:code={selectedCss} language="css" filename="sample.css" />
-
-	<Preview html={selectedHtml} js={''} css={selectedCss} />
+	<div class="flex flex-row">
+		<div class="w-1/2 m-2 flex-col">
+			<CodeEditor bind:code={selectedHtml} language="html" filename="sample.html" />
+			<CodeEditor bind:code={selectedCss} language="css" filename="sample.css" />
+		</div>
+		<div class="w-1/2 m-2">
+			<Preview html={selectedHtml} js={''} css={selectedCss} />
+		</div>
+	</div>
 
 	<p class="m-2 text-lg font-bold">Browser</p>
 
