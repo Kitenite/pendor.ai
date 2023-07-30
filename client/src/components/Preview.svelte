@@ -36,13 +36,14 @@
 							justify-content: center;
 							align-items: center;
 							height: 100%;
+							width: 100%;
 							margin: 0;
 							padding: 0;
 						}
 					</style>
 				</head>
 				<body>
-					<div id="root" style="padding: 16px;"></div>
+					<div id="root"></div>
 					<script type="text/javascript">${js || ''}</\script>
 					${html || ''}
 				</body>
@@ -104,7 +105,7 @@
 	{/if}
 	<div class="border-2 rounded grow">
 		<!-- prettier-ignore -->
-		<iframe bind:this={iframe} title="preview" sandbox={allowScripts ? "allow-scripts": ""} width="100%" height="100%"></iframe>
+		<iframe class="" bind:this={iframe} title="preview" sandbox={allowScripts ? "allow-scripts": ""} width="100%" height="100%" ></iframe>
 	</div>
 	{#if allowSave}
 		<button

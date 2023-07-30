@@ -16,7 +16,6 @@
 		const uuidsString = await response.text();
 		// The uuids are received as a string, to convert back to array
 		const uuidsArray = uuidsString.split(',');
-		console.log(uuidsArray);
 		return uuidsArray;
 	};
 

@@ -7,7 +7,6 @@ const saveComponent = async (component: Component) => {
     const fileName = `comp-${uuid}`
     const location = `storage/${fileName}.json`;
     component.uuid = uuid;
-    console.log(uuid);
     try {
         await fs.writeFile(location, JSON.stringify(component));
         console.log('Data written to file');
@@ -21,7 +20,6 @@ const saveComponent = async (component: Component) => {
 export async function POST({ request }) {
     try {
         const component = await request.json();
-        console.log(component);
         const respUuid = await saveComponent(component);
         const respObj = { uuid: respUuid };
         return new Response( JSON.stringify(respObj));
