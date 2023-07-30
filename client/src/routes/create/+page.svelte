@@ -15,7 +15,6 @@
 		<div class="w-1/2 m-2">
 			<CodeEditor bind:code={html} language="html" filename="sample.html" />
 			<CodeEditor bind:code={css} language="css" filename="sample.css" />
-			<CodeEditor bind:code={js} language="javascript" filename="sample.js" />
 		</div>
 		<div class="w-1/2 m-2">
 			<Preview {html} {css} {js} />

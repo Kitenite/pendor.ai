@@ -45,8 +45,8 @@
 	};
 </script>
 
-<main>
-	{#each components as component}
+<main class="grid grid-cols-3">
+	{#each components as component, index}
 		<div
 			class="relative m-4 bg-transparent border-transparent hover:border-blue-500 hover:border-2 transition-colors duration-200 rounded"
 		>
@@ -69,14 +69,20 @@
 		tabindex="-1"
 		class="fixed inset-0 z-50 p-4 overflow-auto max-h-screen bg-gray-900 bg-opacity-50 flex items-center justify-center"
 	>
-		<div class="bg-white rounded-lg p-10 min-w-full md:min-w-2xl text-center flex flex-col">
-			<h3 class="text-xl font-semibold">Code preview</h3>
+		<div class=" bg-white rounded-lg p-10 min-w-full md:min-w-2xl text-center flex flex-col">
+			<h3 class="text-xl font-semibold">Edit component</h3>
 			<!-- Modal content -->
-			<div class="text-left flex flex-col">
+			<div class="text-left flex flex-col pt-4">
+				<Preview
+					html={activeComponent.html}
+					css={activeComponent.css}
+					js={activeComponent.js}
+					showHeader={false}
+					allowSave={true}
+				/>
 				<!-- Modal body -->
 				<CodeEditor bind:code={activeComponent.html} language="html" filename="sample.html" />
 				<CodeEditor bind:code={activeComponent.css} language="css" filename="sample.css" />
-				<CodeEditor bind:code={activeComponent.js} language="javascript" filename="sample.js" />
 				<!-- Modal footer -->
 				<div class="flex justify-end pt-6 space-x-2 border-t border-gray-600">
 					<!-- <button
