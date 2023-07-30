@@ -1,9 +1,14 @@
-<script>
+<script lang="ts">
 	import { onMount, afterUpdate, onDestroy } from 'svelte';
+	import type { Component } from '$lib/models';
 
 	export let html = '';
 	export let css = '';
 	export let js = '';
+
+	export let showHeader = true;
+	export let allowSave = true;
+	export let allowScripts = true;
 
 	let iframe;
 	let url = '';
@@ -64,18 +69,19 @@
 	}
 
 	async function uploadComponent() {
-		const component = {
+		const component: Component = {
+			uuid,
 			html,
 			css,
 			js
 		};
 
-		const response = await fetch('/api/files', {
+		const response = await fetch('/api/components/save', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({ data: JSON.stringify(component), uuid })
+			body: JSON.stringify(component)
 		});
 
 		const respData = await response.json();
@@ -93,16 +99,21 @@
 </script>
 
 <main class="flex flex-col h-full">
-	<p class="m-2 text-lg font-bold">Preview</p>
+	{#if showHeader}
+		<p class="m-2 text-lg font-bold">Preview</p>
+	{/if}
 	<div class="border-2 rounded grow">
 		<!-- prettier-ignore -->
-		<iframe bind:this={iframe} title="preview" sandbox="allow-scripts" width="100%" height="100%"></iframe>
+		<iframe bind:this={iframe} title="preview" sandbox={allowScripts ? "allow-scripts": ""} width="100%" height="100%"></iframe>
 	</div>
-	<button
-		class="m-2 p-2 rounded-md {hasContentChanged
-			? 'bg-blue-500 text-white'
-			: 'bg-gray-500 text-gray-300 cursor-not-allowed'}"
-		on:click={uploadComponent}
-		disabled={!hasContentChanged}>{hasContentChanged ? 'Save component' : 'Component saved'}</button
-	>
+	{#if allowSave}
+		<button
+			class="m-2 p-2 rounded-md {hasContentChanged
+				? 'bg-blue-500 text-white'
+				: 'bg-gray-500 text-gray-300 cursor-not-allowed'}"
+			on:click={uploadComponent}
+			disabled={!hasContentChanged}
+			>{hasContentChanged ? 'Save component' : 'Component saved'}</button
+		>
+	{/if}
 </main>

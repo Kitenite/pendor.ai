@@ -2,5 +2,6 @@
 export class Constants {
     public static readonly CREATE_PAGE = '/create'
     public static readonly COLLECT_PAGE = '/collect'
+    public static readonly COMPONENTS_PAGE = '/components'
     public static readonly CLICK_IDENTIFIER = 'CLICK_IDENTIFIER';
 }

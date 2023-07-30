@@ -14,6 +14,10 @@
 			<a
 				href={Constants.COLLECT_PAGE}
 				class="mx-2 {$page.url.pathname == Constants.COLLECT_PAGE ? 'font-bold' : ''}">Collect</a
+			><a
+				href={Constants.COMPONENTS_PAGE}
+				class="mx-2 {$page.url.pathname == Constants.COMPONENTS_PAGE ? 'font-bold' : ''}"
+				>Components</a
 			>
 		</div>
 	</nav>
