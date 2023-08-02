@@ -4,6 +4,7 @@
 	import Preview from './Preview.svelte';
 	import { writable } from 'svelte/store';
 	import CodeEditor from './CodeEditor.svelte';
+	import { DomManipulator } from '$lib/dom';
 
 	let componentUuids: string[] = [];
 	let components: Component[] = [];
@@ -11,22 +12,10 @@
 
 	const isModalOpen = writable(false);
 
-	const getComponentUuids = async () => {
-		const response = await fetch('/api/components/list');
-		const uuidsString = await response.text();
-		// The uuids are received as a string, to convert back to array
-		const uuidsArray = uuidsString.split(',');
-		return uuidsArray;
-	};
-
-	const getComponentByUuid = async (uuid: string) => {
-		const response = await fetch(`/api/components/${uuid}`);
-		const component = await response.json();
-		return component;
-	};
-
 	const getComponentsByUuids = async (uuids: string[]) => {
-		components = await Promise.all(uuids.map(async (uuid) => await getComponentByUuid(uuid)));
+		components = await Promise.all(
+			uuids.map(async (uuid) => await DomManipulator.getComponentByUuid(uuid))
+		);
 	};
 
 	$: if (componentUuids.length > 0) {
@@ -34,7 +23,7 @@
 	}
 
 	onMount(async () => {
-		componentUuids = await getComponentUuids();
+		componentUuids = await DomManipulator.getComponentUuids();
 	});
 
 	const showComponentCode = (component: Component) => {
