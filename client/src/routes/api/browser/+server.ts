@@ -1,4 +1,6 @@
 import puppeteer from 'puppeteer';
+const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+const BROWSERLESS_TOKEN = process.env.BROWSERLESS_TOKEN;
 
 const embeddedTrackingFunction = () => {
     const clickHandler = (event) => {
@@ -53,7 +55,9 @@ const embeddedTrackingFunction = () => {
 
 export async function GET({ url }) {
     const contentUrl = url.searchParams.get('url') ?? 'https://kit.svelte.dev/'
-    const browser = await puppeteer.launch({headless: "new"});
+    const browser = await ( IS_PRODUCTION ?  
+        puppeteer.connect({ browserWSEndpoint: `wss://chrome.browserless.io?token=${BROWSERLESS_TOKEN}` })
+        : puppeteer.launch({headless: true}));
     const page = await browser.newPage();
 
     // This will store the CSS data
