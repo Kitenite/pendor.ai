@@ -1,9 +1,12 @@
 <script>
 	import Browser from '../../components/Browser.svelte';
-	import Header from '../../components/Header.svelte';
+	import { page } from '$app/stores';
+
+	// Optional query
+	const query = $page.url.searchParams.get('url');
+	let input = query ?? '';
 </script>
 
 <main class="flex flex-col">
-	<Header />
-	<Browser />
+	<Browser url={input} />
 </main>

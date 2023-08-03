@@ -1,12 +1,13 @@
 <script>
 	import { useChat } from 'ai/svelte';
 	import Spinner from './Spinner.svelte';
+	import { onMount } from 'svelte';
 
 	export let html = '';
 	export let css = '';
 	export let js = '';
 	export let useTailwindcss = true;
-	let simpleInput = '';
+	export let simpleInput = '';
 
 	const functionCallHandler = async (chatMessages, functionCall) => {
 		if (functionCall.name === 'get_code') {
@@ -19,6 +20,10 @@
 		}
 	};
 
+	onMount(async () => {
+		handleInputChange();
+	});
+
 	const { messages, input, handleSubmit, isLoading } = useChat({
 		api: '/api/chat',
 		experimental_onFunctionCall: functionCallHandler
@@ -30,7 +35,7 @@
 		isLoadingValue = value;
 	});
 
-	const handleInputChange = (event) => {
+	const handleInputChange = () => {
 		let processedInput;
 		if (html == '' && css == '' && js == '') {
 			// Add your logic here for input change

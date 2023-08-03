@@ -4,6 +4,5 @@
 </script>
 
 <main class="flex flex-col">
-	<Header />
 	<ComponentsViewer />
 </main>

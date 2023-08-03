@@ -1,12 +1,12 @@
 <script>
-	import { onMount, onDestroy } from 'svelte';
+	import { onMount } from 'svelte';
 	import Spinner from './Spinner.svelte';
 	import Preview from './Preview.svelte';
 	import CodeEditor from './CodeEditor.svelte';
 	import { Constants } from '$lib';
 
+	export let url = '';
 	let iframe;
-	let url = 'https://stackoverflow.com/';
 	let isLoading = false;
 	let selectedHtml = '';
 	let selectedCss = '';
