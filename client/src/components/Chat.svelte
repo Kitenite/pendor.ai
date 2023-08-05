@@ -22,6 +22,11 @@
 
 	onMount(async () => {
 		handleInputChange();
+
+		// Automatically trigger form submit if input is pre-filled
+		if (simpleInput != '' && $input != '' && html == '' && css == '' && js == '') {
+			triggerFormSubmit();
+		}
 	});
 
 	const { messages, input, handleSubmit, isLoading } = useChat({
@@ -54,6 +59,18 @@
 
 		input.set(processedInput);
 	};
+
+	function triggerFormSubmit() {
+		// Create a synthetic event object
+		const syntheticEvent = {
+			target: document.querySelector('form'), // Assuming there's only one form
+			preventDefault: () => {} // Mock preventDefault method
+			// Add other properties if needed...
+		};
+
+		// Call handleSubmit with the synthetic event
+		handleSubmit(syntheticEvent);
+	}
 </script>
 
 <main>

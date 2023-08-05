@@ -1,9 +1,12 @@
 <script>
 	import { Constants } from '$lib';
+	import AnimatedPlaceholder from '../components/AnimatedPlaceholder.svelte';
+	import GenerateButton from '../components/GenerateButton.svelte';
+	// import CameraButton from '../components/CameraButton.svelte';
 
-	const isValidUrl = (string) => {
+	const isValidUrl = (str = '') => {
 		try {
-			new URL(string);
+			new URL(str);
 		} catch (_) {
 			return false;
 		}
@@ -34,22 +37,20 @@
 			<p class="mt-2 text-lg text-center leading-7 p-4">
 				Describe your design in a few words, or drop in a URL of a website <br /> that inspires you below
 			</p>
-			<form
-				on:submit={submitForm}
-				class="m-4 flex items-center border border-black rounded-xl p-1.5"
-			>
-				<input
-					name="query"
-					type="text"
-					class="w-full py-2 px-4 outline-none font-semibold"
-					placeholder="Create a chat UI with red bubbles..."
-				/>
-				<button class="bg-black hover:bg-gray-700 text-white py-3 px-5 rounded-xl">Generate</button>
-			</form>
+			<div class="flex flex-row items-center">
+				<form
+					on:submit={submitForm}
+					class="flex flex-grow m-4 items-center border border-black rounded-xl p-1.5"
+				>
+					<AnimatedPlaceholder />
+					<GenerateButton />
+				</form>
+				<!-- <CameraButton /> -->
+			</div>
 		</div>
 	</div>
 
-	<h1 class="text-4xl font-extrabold text-center text-gray-900">How this works</h1>
+	<!-- <h1 class="text-4xl font-extrabold text-center text-gray-900">How this works</h1>
 	<ul class="grid grid-cols-3 gap-4 pl-5 pt-10 text-center">
 		<li><strong>Create</strong><br /> Create and edit components with AI</li>
 		<li>
@@ -58,5 +59,5 @@
 		<li>
 			<strong>Components</strong><br /> View and edit all your saved components
 		</li>
-	</ul>
+	</ul> -->
 </main>
