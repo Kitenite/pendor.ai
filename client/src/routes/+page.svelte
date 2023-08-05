@@ -2,6 +2,7 @@
 	import { Constants } from '$lib';
 	import AnimatedPlaceholder from '../components/AnimatedPlaceholder.svelte';
 	import GenerateButton from '../components/GenerateButton.svelte';
+	import Header from '../components/Header.svelte';
 	// import CameraButton from '../components/CameraButton.svelte';
 
 	const isValidUrl = (str = '') => {
@@ -28,6 +29,7 @@
 	};
 </script>
 
+<Header />
 <main class="h-screen">
 	<div class="flex items-center justify-center h-3/4">
 		<div class="max-w-prose mx-auto sm:px-6 lg:max-w-7xl lg:px-8 py-6">
@@ -43,7 +45,7 @@
 					class="flex flex-grow m-4 items-center border border-black rounded-xl p-1.5"
 				>
 					<AnimatedPlaceholder />
-					<GenerateButton />
+					<GenerateButton buttonClassOverride="py-3" />
 				</form>
 				<!-- <CameraButton /> -->
 			</div>

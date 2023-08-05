@@ -2,6 +2,10 @@
 	import { onMount } from 'svelte';
 	import { slide } from 'svelte/transition';
 
+	export let input = '';
+	export let handleInputChange = () => {};
+	export let classOverload = '';
+
 	let placeholders = [
 		'A chat UI with blue text bubbles...',
 		'https://tailwindcss.com/',
@@ -23,9 +27,11 @@
 </script>
 
 <input
+	bind:value={input}
+	on:input={handleInputChange}
 	transition:slide
 	name="query"
 	type="text"
-	class="w-full py-2 px-4 outline-none font-semibold"
+	class={`w-full py-2 px-4 outline-none font-semibold bg-transparent ${classOverload}`}
 	placeholder={currentPlaceholder}
 />

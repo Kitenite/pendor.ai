@@ -2,6 +2,8 @@
 	import { useChat } from 'ai/svelte';
 	import Spinner from './Spinner.svelte';
 	import { onMount } from 'svelte';
+	import AnimatedPlaceholder from './AnimatedPlaceholder.svelte';
+	import GenerateButton from './GenerateButton.svelte';
 
 	export let html = '';
 	export let css = '';
@@ -73,25 +75,17 @@
 	}
 </script>
 
-<main>
-	<form on:submit={handleSubmit} class="flex flex-row items-center">
-		<input
-			class="border-2 border-blue-500 rounded-md p-2 m-4 w-1/2"
-			type="text"
-			bind:value={simpleInput}
-			on:input={handleInputChange}
-			placeholder="Describe your component"
-			disabled={isLoadingValue}
-		/>
+<main class="w-full px-10 max-w-screen-md">
+	<form
+		on:submit={handleSubmit}
+		class="flex flex-grow m-4 items-center bg-gray-100 rounded-xl p-1.5"
+	>
+		<AnimatedPlaceholder input={simpleInput} {handleInputChange} />
 		{#if isLoadingValue}
 			<Spinner />
 		{:else}
-			<button
-				type="submit"
-				class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-				>Generate</button
-			>
-			<label class="inline-flex items-center m-4">
+			<GenerateButton buttonClassOverride="py-2" />
+			<!-- <label class="inline-flex items-center m-4">
 				<input
 					type="checkbox"
 					bind:checked={useTailwindcss}
@@ -99,7 +93,7 @@
 					class="form-checkbox h-5 w-5 text-blue-600"
 				/>
 				<span class="ml-2 text-gray-700">Use Tailwindcss</span>
-			</label>
+			</label> -->
 		{/if}
 	</form>
 </main>

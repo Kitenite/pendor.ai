@@ -1,4 +1,10 @@
-<button class="bg-black hover:bg-gray-700 text-white py-3 pr-5 pl-4 rounded-xl flex flex-row">
+<script>
+	export let buttonClassOverride = '';
+</script>
+
+<button
+	class={`bg-black hover:bg-gray-700 text-white pr-5 pl-4 rounded-xl flex flex-row py-2 ${buttonClassOverride}`}
+>
 	<svg
 		class="mr-2"
 		width="24"

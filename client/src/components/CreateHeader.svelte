@@ -10,21 +10,21 @@
 	};
 </script>
 
-<header class="py-4">
+<header class="py-5">
 	<nav class="container mx-auto flex justify-between items-center h-10">
 		<Logo />
-		{#if signedIn}
-			<div>
-				<a
-					href={Constants.CREATE_PAGE}
-					class="mx-2 {$page.url.pathname == Constants.CREATE_PAGE ? 'font-bold' : ''}">Create</a
-				><a
-					href={Constants.COMPONENTS_PAGE}
-					class="mx-2 {$page.url.pathname == Constants.COMPONENTS_PAGE ? 'font-bold' : ''}"
-					>Components</a
-				>
-			</div>
-		{:else}
+		<slot />
+		<div>
+			<a
+				href={Constants.CREATE_PAGE}
+				class="mx-2 {$page.url.pathname == Constants.CREATE_PAGE ? 'font-bold' : ''}">Create</a
+			><a
+				href={Constants.COMPONENTS_PAGE}
+				class="mx-2 {$page.url.pathname == Constants.COMPONENTS_PAGE ? 'font-bold' : ''}"
+				>Components</a
+			>
+		</div>
+		{#if !signedIn}
 			<div>
 				<button on:click={logIn} class="mx-2 font-semibold">Log in</button>
 				<button on:click={logIn} class="px-4 py-3 ml-3 rounded-lg bg-black text-white font-semibold"

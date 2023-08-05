@@ -1,6 +1,5 @@
 <script>
 	import '../app.css';
-	import Header from '../components/Header.svelte';
 
 	// Import the functions you need from the SDKs you need
 	import { initializeApp } from 'firebase/app';
@@ -30,5 +29,4 @@
 	const storage = getStorage(app);
 </script>
 
-<Header />
 <slot />
