@@ -50,4 +50,13 @@
 	</div>
 
 	<h1 class="text-4xl font-extrabold text-center text-gray-900">How this works</h1>
+	<ul class="grid grid-cols-3 gap-4 pl-5 pt-10 text-center">
+		<li><strong>Create</strong><br /> Create and edit components with AI</li>
+		<li>
+			<strong>Collect</strong><br /> Explore and pull in components from other websites
+		</li>
+		<li>
+			<strong>Components</strong><br /> View and edit all your saved components
+		</li>
+	</ul>
 </main>

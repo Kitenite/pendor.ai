@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { Constants } from '$lib';
 
-	let signedIn = false;
+	let signedIn = true;
 
 	const logIn = () => {
 		signedIn = true;

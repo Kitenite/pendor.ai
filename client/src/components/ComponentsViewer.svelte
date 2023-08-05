@@ -29,7 +29,6 @@
 	const showComponentCode = (component: Component) => {
 		activeComponent = component;
 		isModalOpen.set(true);
-		console.log(activeComponent);
 	};
 </script>
 
