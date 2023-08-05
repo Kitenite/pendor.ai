@@ -1,7 +1,7 @@
 <script>
 	import { useChat } from 'ai/svelte';
-	import Spinner from './Spinner.svelte';
 	import { onMount } from 'svelte';
+	import Spinner from './Spinner.svelte';
 	import AnimatedPlaceholder from './AnimatedPlaceholder.svelte';
 	import GenerateButton from './GenerateButton.svelte';
 
@@ -10,6 +10,11 @@
 	export let js = '';
 	export let useTailwindcss = true;
 	export let simpleInput = '';
+	export let url = '';
+	export let isInputUrl = false;
+	export let isLoadingValue = false;
+
+	$: simpleInput != '' && handleInputChange();
 
 	const functionCallHandler = async (chatMessages, functionCall) => {
 		if (functionCall.name === 'get_code') {
@@ -36,13 +41,22 @@
 		experimental_onFunctionCall: functionCallHandler
 	});
 
-	let isLoadingValue = false;
-
 	isLoading.subscribe((value) => {
 		isLoadingValue = value;
 	});
 
+	const isValidUrl = (str = '') => {
+		try {
+			new URL(str);
+		} catch (_) {
+			return false;
+		}
+		return true;
+	};
+
 	const handleInputChange = () => {
+		isInputUrl = isValidUrl(simpleInput);
+
 		let processedInput;
 		if (html == '' && css == '' && js == '') {
 			// Add your logic here for input change
@@ -70,30 +84,30 @@
 			// Add other properties if needed...
 		};
 
-		// Call handleSubmit with the synthetic event
-		handleSubmit(syntheticEvent);
+		const newQuery = syntheticEvent.target?.query.value || '';
+		if (!newQuery) {
+			return;
+		}
+
+		const isUrl = isValidUrl(newQuery);
+		if (isUrl) {
+			url = newQuery;
+		} else {
+			handleSubmit(syntheticEvent);
+		}
 	}
 </script>
 
 <main class="w-full px-10 max-w-screen-md">
 	<form
-		on:submit={handleSubmit}
+		on:submit={triggerFormSubmit}
 		class="flex flex-grow m-4 items-center bg-gray-100 rounded-xl p-1.5"
 	>
-		<AnimatedPlaceholder input={simpleInput} {handleInputChange} />
+		<AnimatedPlaceholder bind:input={simpleInput} {handleInputChange} />
 		{#if isLoadingValue}
 			<Spinner />
 		{:else}
-			<GenerateButton buttonClassOverride="py-2" />
-			<!-- <label class="inline-flex items-center m-4">
-				<input
-					type="checkbox"
-					bind:checked={useTailwindcss}
-					on:change={handleInputChange}
-					class="form-checkbox h-5 w-5 text-blue-600"
-				/>
-				<span class="ml-2 text-gray-700">Use Tailwindcss</span>
-			</label> -->
+			<GenerateButton buttonClassOverride="py-2" {isInputUrl} />
 		{/if}
 	</form>
 </main>

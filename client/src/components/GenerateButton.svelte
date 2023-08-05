@@ -1,5 +1,6 @@
 <script>
 	export let buttonClassOverride = '';
+	export let isInputUrl = false;
 </script>
 
 <button
@@ -31,5 +32,5 @@
 			/>
 		</g>
 	</svg>
-	Generate</button
+	{isInputUrl ? 'Collect' : 'Generate'}</button
 >
