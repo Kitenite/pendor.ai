@@ -20,21 +20,22 @@
 <CreateHeader>
 	<Chat bind:html bind:css bind:js simpleInput={input} bind:url isLoadingValue={isBrowserLoading} />
 </CreateHeader>
-<main class="flex flex-col p-4 bg-slate-100 w-full h-screen">
-	<div class="flex flex-row">
-		<div class="w-1/2 m-2">
+<main class="flex flex-row bg-slate-100 w-full h-screen">
+	<div class="flex-grow">
+		<Browser
+			bind:isLoading={isBrowserLoading}
+			bind:url
+			bind:selectedHtml={html}
+			bind:selectedCss={css}
+		/>
+	</div>
+	<div class="flex flex-col bg-white border border-gray-200 p-4">
+		<div class=" m-2">
+			<Preview {html} {css} {js} />
+		</div>
+		<div class=" m-2">
 			<CodeEditor bind:code={html} language="html" filename="sample.html" />
 			<CodeEditor bind:code={css} language="css" filename="sample.css" />
 		</div>
-		<div class="w-1/2 m-2">
-			<Preview {html} {css} {js} />
-		</div>
 	</div>
-
-	<Browser
-		bind:isLoading={isBrowserLoading}
-		bind:url
-		bind:selectedHtml={html}
-		bind:selectedCss={css}
-	/>
 </main>
