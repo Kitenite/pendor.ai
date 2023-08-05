@@ -61,5 +61,5 @@
 	});
 </script>
 
-<p class="m-2 text-lg font-bold">{language}</p>
+<p class="m-2 text-md font-bold">{language}</p>
 <div class="container h-48 border-2 rounded flex-grow" bind:this={editorContainer} />

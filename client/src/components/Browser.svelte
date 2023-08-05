@@ -47,8 +47,6 @@
 </script>
 
 <main class="flex flex-col h-full">
-	<p class="m-2 text-lg font-bold">Browser</p>
-
 	<div class="border-2 rounded h-screen m-10">
 		<!-- prettier-ignore -->
 		<iframe 
