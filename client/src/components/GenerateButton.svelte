@@ -1,6 +1,7 @@
 <script>
 	export let buttonClassOverride = '';
 	export let isInputUrl = false;
+	export let isEditing = false;
 </script>
 
 <button
@@ -32,5 +33,11 @@
 			/>
 		</g>
 	</svg>
-	{isInputUrl ? 'Collect' : 'Generate'}</button
+	{#if isEditing}
+		<span class="mr-2">Update</span>
+	{:else if isInputUrl}
+		<span class="mr-2">Collect</span>
+	{:else}
+		<span class="mr-2">Generate</span>
+	{/if}</button
 >

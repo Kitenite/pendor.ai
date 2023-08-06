@@ -31,7 +31,7 @@
 	</div>
 	<div class="flex flex-col bg-white border border-gray-200 p-4">
 		<div class=" m-2">
-			<Preview {html} {css} {js} />
+			<Preview bind:html bind:css bind:js />
 		</div>
 		<div class=" m-2">
 			<CodeEditor bind:code={html} language="html" filename="sample.html" />

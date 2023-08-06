@@ -14,6 +14,8 @@
 	export let isInputUrl = false;
 	export let isLoadingValue = false;
 
+	$: isEditing = html != '' || css != '' || js != '';
+
 	$: simpleInput != '' && handleInputChange();
 
 	const functionCallHandler = async (chatMessages, functionCall) => {
@@ -107,7 +109,7 @@
 		{#if isLoadingValue}
 			<Spinner />
 		{:else}
-			<GenerateButton buttonClassOverride="py-2" {isInputUrl} />
+			<GenerateButton buttonClassOverride="py-2" {isInputUrl} {isEditing} />
 		{/if}
 	</form>
 </main>
