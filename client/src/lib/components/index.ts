@@ -1,3 +1,4 @@
+import { FirebaseService } from '$lib/firebase';
 import type { Component } from '$lib/models/index.js';
 import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from 'uuid';
@@ -10,6 +11,9 @@ export interface ComponentService {
 
 
 export class ComponentServiceImpl implements ComponentService {
+    constructor() {
+        const firebaseService = new FirebaseService();
+    }
 
     buildPathReference = (uuid: string): string => {
         return `components/${uuid}.json`;
