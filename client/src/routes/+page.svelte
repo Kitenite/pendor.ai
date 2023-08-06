@@ -19,13 +19,7 @@
 		if (!query) {
 			return;
 		}
-
-		const isUrl = isValidUrl(query);
-		if (isUrl) {
-			window.location.href = `${Constants.COLLECT_PAGE}?url=${query}`;
-		} else {
-			window.location.href = `${Constants.CREATE_PAGE}?query=${query}`;
-		}
+		window.location.href = `${Constants.CREATE_PAGE}?query=${query}`;
 	};
 </script>
 

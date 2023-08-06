@@ -2,7 +2,7 @@
 	import '../app.css';
 
 	// Import the functions you need from the SDKs you need
-	import { initializeApp } from 'firebase/app';
+	import { getApp, initializeApp } from 'firebase/app';
 	import { getAuth } from 'firebase/auth';
 	import { getFirestore } from 'firebase/firestore';
 	import { getStorage } from 'firebase/storage';
@@ -23,7 +23,13 @@
 	};
 
 	// Initialize Firebase
-	const app = initializeApp(firebaseConfig);
+	let app;
+	try {
+		app = getApp();
+	} catch (error) {
+		app = initializeApp(firebaseConfig);
+	}
+
 	const auth = getAuth(app);
 	const db = getFirestore(app);
 	const storage = getStorage(app);
