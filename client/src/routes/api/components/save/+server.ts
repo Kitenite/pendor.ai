@@ -1,3 +1,4 @@
+import { DomManipulator } from '$lib/dom/index.js';
 import type { Component } from '$lib/models/index.js';
 import fs from 'fs/promises';
 import { v4 as uuidv4 } from 'uuid';
@@ -7,6 +8,8 @@ const saveComponent = async (component: Component) => {
     const fileName = `comp-${uuid}`
     const location = `storage/${fileName}.json`;
     component.uuid = uuid;
+    component.css = DomManipulator.minimizeCss(component.html, component.css);
+
     try {
         await fs.writeFile(location, JSON.stringify(component));
         console.log('Data written to file');
