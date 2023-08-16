@@ -4,7 +4,7 @@
 	import Preview from './Preview.svelte';
 	import CodeEditor from './CodeEditor.svelte';
 	import { DomManipulator } from '$lib/dom';
-	import { Modal } from 'flowbite-svelte';
+	import Modal from './Modal.svelte';
 
 	let componentUuids: string[] = [];
 	let components: Component[] = [];
@@ -50,7 +50,23 @@
 	{/each}
 </main>
 
-<Modal title="Edit component" bind:open={isModalOpen} outsideclose>
+<Modal
+	bind:isOpen={isModalOpen}
+	title="Edit component"
+	size="large"
+	footerButtons={[
+		{
+			text: 'Close',
+			class: 'bg-gray-200 text-gray-600',
+			action: () => {
+				isModalOpen = false;
+			}
+		}
+	]}
+	onClose={() => {
+		isModalOpen = false;
+	}}
+>
 	<Preview
 		html={activeComponent?.html}
 		css={activeComponent?.css}

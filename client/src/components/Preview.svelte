@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import type { Component } from '$lib/models';
-	import { Modal } from 'flowbite-svelte';
+	import Modal from './Modal.svelte';
 	import ExportTabs from './ExportTabs.svelte';
 
 	export let html = '';
@@ -195,8 +195,24 @@
 			</button>
 		{/if}
 	</div>
-
-	<Modal title="Export component" bind:open={isModalOpen} outsideclose>
-		<ExportTabs {html} {css} {js} />
-	</Modal>
 </main>
+
+<Modal
+	bind:isOpen={isModalOpen}
+	title="Edit component"
+	size="large"
+	footerButtons={[
+		{
+			text: 'Close',
+			class: 'bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer',
+			action: () => {
+				isModalOpen = false;
+			}
+		}
+	]}
+	onClose={() => {
+		isModalOpen = false;
+	}}
+>
+	<ExportTabs {html} {css} {js} />
+</Modal>
