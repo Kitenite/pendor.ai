@@ -30,7 +30,6 @@ export class ComponentServiceImpl implements ComponentService {
     }
 
     async saveComponent(component: Component): Promise<string> {
-        console.log(component.uuid && component.uuid != "")
         const uuid: string = (component.uuid && component.uuid != "") ? component.uuid : uuidv4();
         component.uuid = uuid;
         

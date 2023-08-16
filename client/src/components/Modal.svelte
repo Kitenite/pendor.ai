@@ -28,6 +28,11 @@
 			window.removeEventListener('keydown', closeOnEsc);
 		};
 	});
+
+	// Stop propagation to prevent outer overlay click from closing the modal
+	function stopPropagation(event) {
+		event.stopPropagation();
+	}
 </script>
 
 {#if isOpen}
@@ -37,8 +42,8 @@
 		on:click={onClose}
 	>
 		<div
+			on:click={stopPropagation}
 			class={`bg-white rounded-lg p-10 text-center flex flex-col ${modalClass}`}
-			on:click={(e) => e.stopPropagation()}
 		>
 			{#if title}
 				<h3 class="text-xl font-semibold">{title}</h3>
@@ -49,7 +54,14 @@
 				{#if footerButtons.length > 0}
 					<div class="flex justify-end pt-6 space-x-2 border-t border-gray-600">
 						{#each footerButtons as button}
-							<button type="button" class={button.class} on:click={button.action}>
+							<button
+								class="border border-gray-200 hover:bg-gray-100 text-gray-500 font-medium rounded-lg text-sm px-5 py-2.5 focus:ring-4 focus:ring-blue-300 hover:text-gray-900 ${button.class}"
+								type="button"
+								on:click={(e) => {
+									e.stopPropagation();
+									button.action();
+								}}
+							>
 								{button.text}
 							</button>
 						{/each}

@@ -2,9 +2,11 @@
 	import loader from '@monaco-editor/loader';
 	import { onDestroy, onMount, afterUpdate } from 'svelte';
 	import type * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
+	import { v4 as uuidv4 } from 'uuid';
 
 	let editorContainer: HTMLElement;
 	let editor: Monaco.editor.IStandaloneCodeEditor;
+	let editorInitialized = false;
 
 	let monaco: typeof Monaco;
 
@@ -42,23 +44,36 @@
 	}
 
 	onMount(async () => {
+		console.log('mounting');
+
+		if (!editorContainer) return; // Avoid creating the editor if the container isn't available
+
+		filename = `${uuidv4()}-${filename}`; // Generate a random filename if none is provided
 		const monacoEditor = await import('monaco-editor');
 		loader.config({ monaco: monacoEditor.default });
 		monaco = await loader.init();
-		editor = await createEditor(editorContainer, code, language, filename);
-		editor.onDidChangeModelContent(() => {
-			code = editor.getValue();
-		});
+
+		// Avoid recreating the editor if it already exists
+		if (!editor) {
+			editor = await createEditor(editorContainer, code, language, filename);
+			editorInitialized = true; // Set the flag here
+			editor.onDidChangeModelContent(() => {
+				code = editor.getValue();
+			});
+		}
 	});
 
 	afterUpdate(() => {
-		if (!monaco) return;
+		if (!editorInitialized || !editor) return;
 		updateEditorContent(editor, code);
 	});
 
 	onDestroy(() => {
-		monaco?.editor.getModels().forEach((model) => model.dispose());
+		console.log('destroying');
+		editor?.getModel()?.dispose();
 		editor?.dispose();
+		editorInitialized = false; // Reset the flag here
+		editor = null; // Clear the editor reference
 	});
 </script>
 

@@ -103,7 +103,6 @@
 	}
 
 	function exportComponent() {
-		console.log('exporting');
 		isModalOpen = true;
 	}
 
@@ -199,7 +198,7 @@
 
 <Modal
 	bind:isOpen={isModalOpen}
-	title="Edit component"
+	title="Export component"
 	size="large"
 	footerButtons={[
 		{
@@ -214,5 +213,7 @@
 		isModalOpen = false;
 	}}
 >
-	<ExportTabs {html} {css} {js} />
+	{#if isModalOpen}
+		<ExportTabs {html} {css} {js} />
+	{/if}
 </Modal>

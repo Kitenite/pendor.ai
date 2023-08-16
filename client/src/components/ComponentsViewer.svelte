@@ -75,6 +75,6 @@
 		allowSave={true}
 		allowClear={false}
 	/>
-	<CodeEditor bind:code={activeComponent.html} language="html" filename="sample.html" />
-	<CodeEditor bind:code={activeComponent.css} language="css" filename="sample.css" />
+	<CodeEditor bind:code={activeComponent.html} language="html" filename="component-viewer.html" />
+	<CodeEditor bind:code={activeComponent.css} language="css" filename="component-viewer.css" />
 </Modal>

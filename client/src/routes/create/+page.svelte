@@ -34,8 +34,8 @@
 			<Preview bind:html bind:css bind:js />
 		</div>
 		<div class=" m-2">
-			<CodeEditor bind:code={html} language="html" filename="sample.html" />
-			<CodeEditor bind:code={css} language="css" filename="sample.css" />
+			<CodeEditor bind:code={html} language="html" filename="create.html" />
+			<CodeEditor bind:code={css} language="css" filename="create.css" />
 		</div>
 	</div>
 </main>
