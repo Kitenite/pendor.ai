@@ -1,4 +1,5 @@
 <script>
+	import mixpanel from '$lib/mixpanel';
 	import { Constants } from '$lib';
 	import AnimatedPlaceholder from '../components/AnimatedPlaceholder.svelte';
 	import GenerateButton from '../components/GenerateButton.svelte';

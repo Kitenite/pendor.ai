@@ -1,6 +1,6 @@
 <script>
 	import { page } from '$app/stores';
-
+	import mixpanel from '$lib/mixpanel';
 	import Chat from '../../components/Chat.svelte';
 	import Preview from '../../components/Preview.svelte';
 	import CodeEditor from '../../components/CodeEditor.svelte';
@@ -15,6 +15,7 @@
 	// Optional query
 	const query = $page.url.searchParams.get('query');
 	let input = query ?? '';
+	mixpanel.track('Page Viewed', { page: $page.url.pathname });
 </script>
 
 <CreateHeader>

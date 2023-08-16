@@ -4,6 +4,7 @@
 	import Spinner from './Spinner.svelte';
 	import AnimatedPlaceholder from './AnimatedPlaceholder.svelte';
 	import GenerateButton from './GenerateButton.svelte';
+	import mixpanel from '$lib/mixpanel';
 
 	export let html = '';
 	export let css = '';
@@ -97,6 +98,10 @@
 		} else {
 			handleSubmit(syntheticEvent);
 		}
+
+		mixpanel.track('Send chat', {
+			query: syntheticEvent.target?.query.value
+		});
 	}
 </script>
 

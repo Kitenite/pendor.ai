@@ -44,8 +44,6 @@
 	}
 
 	onMount(async () => {
-		console.log('mounting');
-
 		if (!editorContainer) return; // Avoid creating the editor if the container isn't available
 
 		filename = `${uuidv4()}-${filename}`; // Generate a random filename if none is provided
@@ -69,7 +67,6 @@
 	});
 
 	onDestroy(() => {
-		console.log('destroying');
 		editor?.getModel()?.dispose();
 		editor?.dispose();
 		editorInitialized = false; // Reset the flag here

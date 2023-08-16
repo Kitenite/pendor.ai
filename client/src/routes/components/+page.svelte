@@ -1,6 +1,9 @@
 <script>
 	import ComponentsViewer from '../../components/ComponentsViewer.svelte';
 	import Header from '../../components/Header.svelte';
+	import { page } from '$app/stores';
+	import mixpanel from '$lib/mixpanel';
+	mixpanel.track('Page Viewed', { page: $page.url.pathname });
 </script>
 
 <main class="flex flex-col">

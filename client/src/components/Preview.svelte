@@ -3,6 +3,7 @@
 	import type { Component } from '$lib/models';
 	import Modal from './Modal.svelte';
 	import ExportTabs from './ExportTabs.svelte';
+	import mixpanel from '$lib/mixpanel';
 
 	export let html = '';
 	export let css = '';
@@ -75,7 +76,7 @@
 		}
 	}
 
-	async function uploadComponent() {
+	async function saveComponent() {
 		const component: Component = {
 			uuid,
 			html,
@@ -94,15 +95,25 @@
 		const respData = await response.json();
 		uuid = respData.uuid;
 		hasContentChanged = false;
+
+		mixpanel.track('Export component', {
+			uuid
+		});
 	}
 
 	function clearComponent() {
+		mixpanel.track('Clear component', {
+			uuid
+		});
 		html = '';
 		css = '';
 		js = '';
 	}
 
 	function exportComponent() {
+		mixpanel.track('Export component', {
+			uuid
+		});
 		isModalOpen = true;
 	}
 
@@ -130,7 +141,7 @@
 				class="m-2 p-2 rounded-md flex-grow {hasContentChanged
 					? 'bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer'
 					: 'bg-gray-100 text-gray-300 cursor-not-allowed'}"
-				on:click={uploadComponent}
+				on:click={saveComponent}
 				disabled={!hasContentChanged}
 			>
 				<div class="flex flex-row justify-center text-center items-center">
