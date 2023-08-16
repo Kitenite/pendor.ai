@@ -10,7 +10,7 @@
 	};
 </script>
 
-<header class="py-4">
+<header class="p-4">
 	<nav class="container mx-auto flex justify-between items-center h-10">
 		<Logo />
 		{#if signedIn}

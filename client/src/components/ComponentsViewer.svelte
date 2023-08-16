@@ -2,15 +2,14 @@
 	import type { Component } from '$lib/models';
 	import { onMount } from 'svelte';
 	import Preview from './Preview.svelte';
-	import { writable } from 'svelte/store';
 	import CodeEditor from './CodeEditor.svelte';
 	import { DomManipulator } from '$lib/dom';
+	import { Modal } from 'flowbite-svelte';
 
 	let componentUuids: string[] = [];
 	let components: Component[] = [];
 	let activeComponent: Component;
-
-	const isModalOpen = writable(false);
+	let isModalOpen = false;
 
 	const getComponentsByUuids = async (uuids: string[]) => {
 		components = await Promise.all(
@@ -28,7 +27,7 @@
 
 	const showComponentCode = (component: Component) => {
 		activeComponent = component;
-		isModalOpen.set(true);
+		isModalOpen = true;
 	};
 </script>
 
@@ -43,52 +42,23 @@
 				js={component.js}
 				showHeader={false}
 				allowSave={false}
+				allowClear={false}
+				allowExport={false}
 			/>
-			<button class="absolute inset-0 z-20" on:click={() => showComponentCode(component)} />
+			<button class="absolute inset-0" on:click={() => showComponentCode(component)} />
 		</div>
 	{/each}
 </main>
 
-<!-- Main modal -->
-{#if activeComponent && $isModalOpen}
-	<div
-		id="defaultModal"
-		tabindex="-1"
-		class="fixed inset-0 z-50 p-4 overflow-auto max-h-screen bg-gray-900 bg-opacity-50 flex items-center justify-center"
-	>
-		<div class=" bg-white rounded-lg p-10 min-w-full md:min-w-2xl text-center flex flex-col">
-			<h3 class="text-xl font-semibold">Edit component</h3>
-			<!-- Modal content -->
-			<div class="text-left flex flex-col pt-4">
-				<Preview
-					html={activeComponent.html}
-					css={activeComponent.css}
-					js={activeComponent.js}
-					showHeader={false}
-					allowSave={true}
-				/>
-				<!-- Modal body -->
-				<CodeEditor bind:code={activeComponent.html} language="html" filename="sample.html" />
-				<CodeEditor bind:code={activeComponent.css} language="css" filename="sample.css" />
-				<!-- Modal footer -->
-				<div class="flex justify-end pt-6 space-x-2 border-t border-gray-600">
-					<!-- <button
-						data-modal-hide="defaultModal"
-						type="button"
-						class="bg-blue-600 hover:bg-blue-800 text-white font-medium rounded-lg text-sm px-5 py-2.5 focus:ring-4 focus:ring-blue-300"
-					>
-						Save
-					</button> -->
-					<button
-						data-modal-hide="defaultModal"
-						type="button"
-						class="border border-gray-200 hover:bg-gray-100 text-gray-500 font-medium rounded-lg text-sm px-5 py-2.5 focus:ring-4 focus:ring-blue-300 hover:text-gray-900"
-						on:click={() => isModalOpen.set(false)}
-					>
-						Close
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
-{/if}
+<Modal title="Edit component" bind:open={isModalOpen} outsideclose>
+	<Preview
+		html={activeComponent?.html}
+		css={activeComponent?.css}
+		js={activeComponent?.js}
+		showHeader={false}
+		allowSave={true}
+		allowClear={false}
+	/>
+	<CodeEditor bind:code={activeComponent.html} language="html" filename="sample.html" />
+	<CodeEditor bind:code={activeComponent.css} language="css" filename="sample.css" />
+</Modal>

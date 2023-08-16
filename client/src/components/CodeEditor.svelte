@@ -11,6 +11,7 @@
 	export let code = '';
 	export let language = '';
 	export let filename = '';
+	export let showTitle = true;
 
 	async function createEditor(
 		container: HTMLElement,
@@ -61,5 +62,7 @@
 	});
 </script>
 
-<p class="m-2 text-md font-bold">{language}</p>
+{#if showTitle}
+	<p class="m-2 text-md font-bold">{language}</p>
+{/if}
 <div class="container h-48 border-2 rounded flex-grow" bind:this={editorContainer} />

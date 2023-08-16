@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import type { Component } from '$lib/models';
+	import { Modal } from 'flowbite-svelte';
+	import ExportTabs from './ExportTabs.svelte';
 
 	export let html = '';
 	export let css = '';
@@ -8,12 +10,14 @@
 
 	export let showHeader = true;
 	export let allowSave = true;
+	export let allowClear = true;
+	export let allowExport = true;
 	export let allowScripts = true;
 
 	let iframe;
 	let url = '';
 	let uuid = '';
-	let saving = false;
+	let isModalOpen = false;
 
 	// Used to detect content changes
 	let prevHtml = html;
@@ -93,10 +97,14 @@
 	}
 
 	function clearComponent() {
-		console.log('hello');
 		html = '';
 		css = '';
 		js = '';
+	}
+
+	function exportComponent() {
+		console.log('exporting');
+		isModalOpen = true;
 	}
 
 	onMount(() => {
@@ -116,8 +124,9 @@
 		<!-- prettier-ignore -->
 		<iframe class="" bind:this={iframe} title="preview" sandbox={allowScripts ? "allow-scripts": ""} width="100%" height="100%" ></iframe>
 	</div>
-	{#if allowSave}
-		<div class="flex flex-row flex-grow">
+
+	<div class="flex flex-row flex-grow">
+		{#if allowSave}
 			<button
 				class="m-2 p-2 rounded-md flex-grow {hasContentChanged
 					? 'bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer'
@@ -156,7 +165,23 @@
 					</span>
 				</div>
 			</button>
+		{/if}
 
+		{#if allowExport}
+			<button
+				class="m-2 p-2 rounded-md flex-grow {hasContentChanged
+					? 'bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer'
+					: 'bg-gray-100 text-gray-300 cursor-not-allowed'}"
+				on:click={exportComponent}
+				disabled={!hasContentChanged}
+			>
+				<div class="flex flex-row justify-center text-center items-center">
+					<span class="ml-1"> Export </span>
+				</div>
+			</button>
+		{/if}
+
+		{#if allowClear}
 			<button
 				class="m-2 p-2 rounded-md flex-grow {hasContentChanged
 					? 'bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer'
@@ -168,6 +193,10 @@
 					<span class="">Clear</span>
 				</div>
 			</button>
-		</div>
-	{/if}
+		{/if}
+	</div>
+
+	<Modal title="Export component" bind:open={isModalOpen} outsideclose>
+		<ExportTabs {html} {css} {js} />
+	</Modal>
 </main>

@@ -44,6 +44,8 @@
 		"@sveltejs/adapter-vercel": "^3.0.3",
 		"ai": "^2.1.25",
 		"firebase": "^10.1.0",
+		"flowbite": "^1.8.1",
+		"flowbite-svelte": "^0.43.2",
 		"monaco-editor": "^0.40.0",
 		"nanoid": "^4.0.2",
 		"openai-edge": "^1.2.1",
