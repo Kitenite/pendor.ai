@@ -96,7 +96,7 @@
 		uuid = respData.uuid;
 		hasContentChanged = false;
 
-		mixpanel.track('Export component', {
+		mixpanel.track('Save component', {
 			uuid
 		});
 	}

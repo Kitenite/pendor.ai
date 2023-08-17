@@ -34,7 +34,7 @@
 <main class="grid grid-cols-3">
 	{#each components as component, index}
 		<div
-			class="relative m-4 bg-transparent border-transparent hover:border-blue-500 hover:border-2 transition-colors duration-200 rounded"
+			class="relative m-4 bg-transparent border-transparent hover:outline-blue-600 hover:outline hover:outline-2 transition-colors duration-200 rounded"
 		>
 			<Preview
 				html={component.html}
