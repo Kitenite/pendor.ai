@@ -47,14 +47,62 @@
 		</div>
 	</div>
 
-	<!-- <h1 class="text-4xl font-extrabold text-center text-gray-900">How this works</h1>
-	<ul class="grid grid-cols-3 gap-4 pl-5 pt-10 text-center">
-		<li><strong>Create</strong><br /> Create and edit components with AI</li>
-		<li>
-			<strong>Collect</strong><br /> Explore and pull in components from other websites
+	<h1 class="text-4xl font-semibold text-center text-gray-900">How this works</h1>
+	<ul class="h-1/2 grid grid-cols-3 gap-12 pl-5 pt-10 text-center">
+		<li class="flex flex-col items-center">
+			<div class="w-full h-40 mx-auto overflow-hidden relative">
+				<img
+					class="absolute top-0 left-0 w-full h-full object-contain"
+					src="/images/home-generate.svg"
+					alt=""
+				/>
+			</div>
+			<br />
+			<div class="flex items-center">
+				<strong>Generate</strong>
+			</div>
+			<br />
+			<p class="text-md max-w-xs mx-auto">
+				Create a UI by describing, linking to a live website, or attaching an image (coming soon)
+			</p>
 		</li>
-		<li>
-			<strong>Components</strong><br /> View and edit all your saved components
+		<li class="flex flex-col items-center">
+			<div class="w-full h-40 mx-auto overflow-hidden relative">
+				<img
+					class="absolute top-0 left-0 w-full h-full object-contain"
+					src="/images/home-collect.svg"
+					alt=""
+				/>
+			</div>
+			<br />
+			<div class="flex items-center">
+				<strong>Collect</strong>
+			</div>
+			<br />
+			<p class="text-md max-w-xs mx-auto">
+				Choose an element from the UI, then copy the code, or save to collection
+			</p>
 		</li>
-	</ul> -->
+		<li class="flex flex-col items-center">
+			<div class="w-full h-40 mx-auto overflow-hidden relative">
+				<img
+					class="absolute top-0 left-0 w-full h-full object-contain"
+					src="/images/home-edit.svg"
+					alt=""
+				/>
+			</div>
+			<br />
+			<div class="flex items-center">
+				<strong class="mr-2">Edit</strong>
+				<div class="text-xs bg-black rounded-xl px-2 py-1">
+					<p class="text-white">COMING SOON</p>
+				</div>
+			</div>
+
+			<br />
+			<p class="text-md max-w-xs mx-auto">
+				Edit the UI using the Edit options, or simply describe what you want
+			</p>
+		</li>
+	</ul>
 </main>
