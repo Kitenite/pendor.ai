@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { Constants } from '$lib';
 	import mixpanel from '$lib/mixpanel';
+	import { v4 as uuidv4 } from 'uuid';
 
 	export let url = '';
 	export let isLoading = false;
@@ -16,8 +17,9 @@
 			'message',
 			function (event) {
 				if (event.data.type === Constants.CLICK_IDENTIFIER) {
-					selectedHtml = event.data.html;
-					selectedCss = event.data.css;
+					const uuid = uuidv4();
+					selectedHtml = event.data.html.replace(Constants.CLICKED_ELEMENT_ID, uuid);
+					selectedCss = event.data.css.replace(Constants.CLICKED_ELEMENT_ID, uuid);
 				}
 				mixpanel.track('Select from browser', {});
 			},

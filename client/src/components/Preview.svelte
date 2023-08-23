@@ -232,7 +232,7 @@
 		{/if}
 
 		<!-- TODO: Admin only -->
-		{#if true}
+		{#if false}
 			<button
 				class="m-2 p-2 rounded-md flex-grow bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer"
 				on:click={deleteComponent}
