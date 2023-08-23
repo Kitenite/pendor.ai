@@ -2,50 +2,94 @@ import puppeteer from 'puppeteer';
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 const BROWSERLESS_TOKEN = process.env.BROWSERLESS_TOKEN;
 
-const embeddedTrackingFunction = () => {
-    const clickHandler = (event) => {
-        event.preventDefault();
-        event.target.style.border = "";
-        event.target.style.backgroundColor = "";
-        event.target.style.outline = "";
-        event.target.style.boxShadow = "";
-        event.target.style.cursor = "";
-        
-        // Get all computed styles of the clicked element
-        const styles = window.getComputedStyle(event.target);
-        let styleString = '';
-        Array.from(styles).forEach(prop => {
-            styleString += `${prop}: ${styles.getPropertyValue(prop)};`;
-        });
-    
-        // Create an element with ID to attach the styles
-        const elementId = 'CLICKED_ELEMENT_ID';
-        event.target.id = elementId;
-        // Wrap the style string in a style tag, specific to that element
-        const styleTag = `#${elementId} { ${styleString} }`;
-    
-        const message = {
-            type: 'CLICK_IDENTIFIER', // Has to be a string here, no imports allowed
-            html: event.target.outerHTML,
-            css: styleTag
-        };
-        window.parent.postMessage(message, '*');
-    }
 
-    const mouseoverHandler = (event) => {
+
+const embeddedTrackingFunction = () => {
+    const applyHighlightStyles = (event) => {
+        // Store the original styles
+        event.target.dataset.originalBorder = event.target.style.border;
+        event.target.dataset.originalBackgroundColor = event.target.style.backgroundColor;
+        event.target.dataset.originalOutline = event.target.style.outline;
+        event.target.dataset.originalBoxShadow = event.target.style.boxShadow;
+        event.target.dataset.originalCursor = event.target.style.cursor;
+    
+        // Apply hover styles
         event.target.style.border = "3px solid red";
         event.target.style.backgroundColor = "rgba(255, 0, 0, 0.2)";
         event.target.style.outline = "3px solid red";
         event.target.style.boxShadow = "0 0 10px red";
         event.target.style.cursor = "pointer";
+    }   
+    
+    const restoreOriginalStyles = (event) => {
+        // Restore the original styles from the stored data
+        event.target.style.border = event.target.dataset.originalBorder || "";
+        event.target.style.backgroundColor = event.target.dataset.originalBackgroundColor || "";
+        event.target.style.outline = event.target.dataset.originalOutline || "";
+        event.target.style.boxShadow = event.target.dataset.originalBoxShadow || "";
+        event.target.style.cursor = event.target.dataset.originalCursor || "";
+    }
+
+    // Everything in here needs to be a string, no imports allowed
+    const clickHandler = (event) => {
+        event.preventDefault();
+    
+        // Mirror restoreOriginalStyles. Has to be replicated here because no imports are allowed
+        restoreOriginalStyles(event);
+    
+        // Get all computed styles of the clicked element
+        const styles = window.getComputedStyle(event.target);
+        let styleString = '';
+        const relevantStyles = [
+            'width', 'height', 'color', 'background-color', 
+            'border', 'border-radius', 'border-top', 'border-right', 'border-bottom', 'border-left',
+            'font-size', 'font-weight', 'font-style', 'font-family', 'text-transform',
+            'letter-spacing', 'line-height', 'text-decoration',
+            'margin', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left',
+            'padding', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
+            'display', 'position', 'top', 'right', 'bottom', 'left',
+            'flex', 'flex-direction', 'flex-wrap', 'flex-flow', 'flex-shrink', 'flex-grow', 'flex-basis',
+            'align-items', 'align-content', 'align-self',
+            'justify-content', 'justify-items', 'justify-self',
+            'grid-template-columns', 'grid-template-rows', 'grid-template-areas',
+            'grid-auto-columns', 'grid-auto-rows', 'grid-auto-flow',
+            'grid-column-start', 'grid-column-end', 'grid-row-start', 'grid-row-end',
+            'order', 'z-index', 'cursor', 'box-shadow', 'opacity', 
+            'transform', 'transition', 'animation', 'object-fit', 'object-position',
+            'overflow', 'overflow-x', 'overflow-y', 'visibility', 
+            'white-space', 'word-spacing', 'vertical-align',
+            'background-image', 'background-size', 'background-repeat', 'background-position'
+        ];
+
+        relevantStyles.forEach(prop => {
+            const value = styles.getPropertyValue(prop);
+            if(value) {
+                styleString += `${prop}: ${value}; `;
+            }
+        });
+        
+        // Create an element with ID to attach the styles
+        const elementId = 'CLICKED_ELEMENT_ID';
+        event.target.id = elementId;
+    
+        // Wrap the style string in a style tag, specific to that element
+        const styleTag = `#${elementId} { ${styleString} }`;
+    
+        const message = {
+            type: 'CLICK_IDENTIFIER', 
+            html: event.target.outerHTML,
+            css: styleTag
+        };
+        window.parent.postMessage(message, '*');
+    }
+    
+
+    const mouseoverHandler = (event) => {
+        applyHighlightStyles(event);
     }
 
     const mouseoutHandler = (event) => {
-        event.target.style.border = "";
-        event.target.style.backgroundColor = "";
-        event.target.style.outline = "";
-        event.target.style.boxShadow = "";
-        event.target.style.cursor = "";
+        restoreOriginalStyles(event);
     }
 
     document.addEventListener('click', clickHandler, false);
