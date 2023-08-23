@@ -121,6 +121,28 @@
 		DomManipulator.deleteComponentByUuid(uuid);
 	}
 
+	function cleanComponent() {
+		mixpanel.track('Clean component', {
+			uuid
+		});
+		fetch('/api/components/clean', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				html: html,
+				css: css
+			})
+		}).then((response) => {
+			response.json().then((data) => {
+				console.log(data);
+
+				css = data.cleanedCSS;
+			});
+		});
+	}
+
 	onMount(() => {
 		updateIFrame();
 	});
@@ -210,13 +232,22 @@
 		{/if}
 
 		<!-- TODO: Admin only -->
-		{#if false}
+		{#if true}
 			<button
 				class="m-2 p-2 rounded-md flex-grow bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer"
 				on:click={deleteComponent}
 			>
 				<div class="flex flex-row justify-center text-center items-center">
 					<span class="">Delete</span>
+				</div>
+			</button>
+
+			<button
+				class="m-2 p-2 rounded-md flex-grow bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer"
+				on:click={cleanComponent}
+			>
+				<div class="flex flex-row justify-center text-center items-center">
+					<span class="">Clean</span>
 				</div>
 			</button>
 		{/if}

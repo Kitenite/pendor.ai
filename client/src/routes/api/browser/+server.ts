@@ -1,4 +1,6 @@
 import puppeteer from 'puppeteer';
+import { v4 as uuidv4 } from 'uuid';
+
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 const BROWSERLESS_TOKEN = process.env.BROWSERLESS_TOKEN;
 
@@ -19,7 +21,7 @@ const embeddedTrackingFunction = () => {
         });
     
         // Create an element with ID to attach the styles
-        const elementId = 'clicked-element';
+        const elementId = uuidv4()
         event.target.id = elementId;
         // Wrap the style string in a style tag, specific to that element
         const styleTag = `#${elementId} { ${styleString} }`;
