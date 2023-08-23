@@ -37,6 +37,7 @@
 		<div class=" m-2">
 			<CodeEditor bind:code={html} language="html" filename="create.html" />
 			<CodeEditor bind:code={css} language="css" filename="create.css" />
+			<CodeEditor bind:code={js} language="javascript" filename="create.js" />
 		</div>
 	</div>
 </main>

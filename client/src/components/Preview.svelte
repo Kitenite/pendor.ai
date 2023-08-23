@@ -4,10 +4,12 @@
 	import Modal from './Modal.svelte';
 	import ExportTabs from './ExportTabs.svelte';
 	import mixpanel from '$lib/mixpanel';
+	import { DomManipulator } from '$lib/dom';
 
 	export let html = '';
 	export let css = '';
 	export let js = '';
+	export let uuid = '';
 
 	export let showHeader = true;
 	export let allowSave = true;
@@ -16,8 +18,7 @@
 	export let allowScripts = true;
 
 	let iframe;
-	let url = '';
-	let uuid = '';
+	let blobUrl = '';
 	let isModalOpen = false;
 
 	// Used to detect content changes
@@ -58,9 +59,8 @@
 		`;
 
 		const blob = new Blob([page], { type: 'text/html' });
-		url = URL.createObjectURL(blob);
-		iframe.src = url;
-		uuid = '';
+		blobUrl = URL.createObjectURL(blob);
+		iframe.src = blobUrl;
 	}
 
 	// Reactively update iframe when content changes
@@ -79,20 +79,17 @@
 	async function saveComponent() {
 		const component: Component = {
 			uuid,
+			version: 1,
+			ownerIds: ['test'],
 			html,
 			css,
-			js
+			js,
+			tags: [],
+			createdAt: new Date().toISOString(),
+			prompt: ''
 		};
 
-		const response = await fetch('/api/components/save', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(component)
-		});
-
-		const respData = await response.json();
+		const respData = await DomManipulator.saveComponent(component);
 		uuid = respData.uuid;
 		hasContentChanged = false;
 
@@ -117,12 +114,19 @@
 		isModalOpen = true;
 	}
 
+	function deleteComponent() {
+		mixpanel.track('Delete component', {
+			uuid
+		});
+		DomManipulator.deleteComponentByUuid(uuid);
+	}
+
 	onMount(() => {
 		updateIFrame();
 	});
 
 	onDestroy(() => {
-		URL.revokeObjectURL(url);
+		URL.revokeObjectURL(blobUrl);
 	});
 </script>
 
@@ -201,6 +205,18 @@
 			>
 				<div class="flex flex-row justify-center text-center items-center">
 					<span class="">Clear</span>
+				</div>
+			</button>
+		{/if}
+
+		<!-- TODO: Admin only -->
+		{#if false}
+			<button
+				class="m-2 p-2 rounded-md flex-grow bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer"
+				on:click={deleteComponent}
+			>
+				<div class="flex flex-row justify-center text-center items-center">
+					<span class="">Delete</span>
 				</div>
 			</button>
 		{/if}

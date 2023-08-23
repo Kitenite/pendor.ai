@@ -74,7 +74,9 @@
 		showHeader={false}
 		allowSave={true}
 		allowClear={false}
+		uuid={activeComponent?.uuid}
 	/>
 	<CodeEditor bind:code={activeComponent.html} language="html" filename="component-viewer.html" />
 	<CodeEditor bind:code={activeComponent.css} language="css" filename="component-viewer.css" />
+	<CodeEditor bind:code={activeComponent.js} language="javascript" filename="component-viewer.js" />
 </Modal>

@@ -23,18 +23,22 @@ const functions: ChatCompletionFunctions[] = [
       properties: {
         html: {
           type: 'string',
-          description: 'The html code for the requested component'
+          description: 'HTML code for the requested component'
         },
         css: {
           type: 'string',
-          description: 'The css styling which will go into a style tag'
+          description: 'CSS styling which will go into a style tag'
         },
         js: {
           type: 'string',
-          description: 'The javascript code  which will go into a script tag'
+          description: 'JavaScript code which will go into a script tag'
         },
+        type: {
+          type: 'string',
+          description: 'The type of component such as button, input, card, etc.'
+        }
       },
-      required: ['html', 'css', 'js']
+      required: ['html', 'css', 'js', 'type']
     }
   }
 ]

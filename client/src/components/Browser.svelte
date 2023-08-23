@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { Constants } from '$lib';
+	import mixpanel from '$lib/mixpanel';
 
 	export let url = '';
 	export let isLoading = false;
@@ -18,6 +19,7 @@
 					selectedHtml = event.data.html;
 					selectedCss = event.data.css;
 				}
+				mixpanel.track('Select from browser', {});
 			},
 			false
 		);

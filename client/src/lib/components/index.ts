@@ -1,6 +1,6 @@
 import { FirebaseService } from '$lib/firebase';
 import type { Component } from '$lib/models/index.js';
-import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytes, listAll, getDownloadURL, deleteObject } from "firebase/storage";
 import { v4 as uuidv4 } from 'uuid';
 
 export interface ComponentService {
@@ -65,4 +65,17 @@ export class ComponentServiceImpl implements ComponentService {
         const component: Component = await response.json();
         return component;
     }
+
+    async deleteComponentByUuid(uuid: string): Promise<string> {
+        const pathReference = this.buildPathReference(uuid);
+        const storage = getStorage();
+        const storageRef = ref(storage, pathReference);
+        return deleteObject(storageRef).then(() => {
+            console.log("File deleted successfully");
+            return "File deleted successfully"
+          }).catch((error) => {
+            console.log("Error deleting file: ", error);
+            return "Error deleting file: " + error
+          });    
+        }
 }

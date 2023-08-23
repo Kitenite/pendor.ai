@@ -1,3 +1,5 @@
+import type { Component } from "$lib/models";
+
 export class DomManipulator {
 	static getDomElementFromHTML = (htmlString: string): Node | null => {
 		const parser = new DOMParser();
@@ -8,6 +10,17 @@ export class DomManipulator {
 	static addChildToDomElement = (parent: Node, child: Node): Node => {
 		parent.appendChild(child);
 		return parent;
+	}
+
+	static saveComponent = async (component: Component) => {
+		const response = await fetch('/api/components/save', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(component)
+		});
+		return await response.json();
 	}
 
 	static getComponentUuids = async () => {
@@ -27,4 +40,16 @@ export class DomManipulator {
 	static minimizeCss = (html: string, css: string) => {
 		return css;
 	};
+
+	static deleteComponentByUuid = async (uuid: string) => {
+		const response = await fetch(`/api/components/delete`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({uuid: uuid})
+		});
+		const component = await response.json();
+		return component;
+	}
 }

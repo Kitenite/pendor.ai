@@ -84,7 +84,6 @@
 		const syntheticEvent = {
 			target: document.querySelector('form'), // Assuming there's only one form
 			preventDefault: () => {} // Mock preventDefault method
-			// Add other properties if needed...
 		};
 
 		const newQuery = syntheticEvent.target?.query.value || '';
@@ -100,7 +99,8 @@
 		}
 
 		mixpanel.track('Send chat', {
-			query: syntheticEvent.target?.query.value
+			query: syntheticEvent.target?.query.value,
+			editing: isEditing
 		});
 	}
 </script>
