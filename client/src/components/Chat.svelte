@@ -32,7 +32,7 @@
 		handleInputChange();
 
 		// Automatically trigger form submit if input is pre-filled
-		if (simpleInput != '' && $input != '' && component) {
+		if (simpleInput != '' && $input != '' && !component.isPopulated) {
 			triggerFormSubmit();
 		}
 	});
@@ -59,7 +59,7 @@
 		isInputUrl = isValidUrl(simpleInput);
 
 		let processedInput;
-		if (component.isPopulated) {
+		if (!component.isPopulated) {
 			// Add your logic here for input change
 			processedInput = `Create the following component: ${simpleInput}. ${
 				useTailwindcss ? 'Use Tailwindcss' : ''
