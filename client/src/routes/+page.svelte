@@ -47,7 +47,7 @@
 		</div>
 	</div>
 
-	<h1 class="text-4xl font-semibold text-center text-gray-900">How this works</h1>
+	<h1 class="text-4xl font-semibold text-center text-gray-900 pb-4">How this works</h1>
 	<ul class="h-1/2 grid grid-cols-3 gap-12 pl-5 pt-10 text-center">
 		<li class="flex flex-col items-center">
 			<div class="w-full h-40 mx-auto overflow-hidden relative">
@@ -59,7 +59,7 @@
 			</div>
 			<br />
 			<div class="flex items-center">
-				<strong>Generate</strong>
+				<strong class="text-lg">Generate</strong>
 			</div>
 			<br />
 			<p class="text-md max-w-xs mx-auto">
@@ -76,7 +76,7 @@
 			</div>
 			<br />
 			<div class="flex items-center">
-				<strong>Collect</strong>
+				<strong class="text-lg">Collect</strong>
 			</div>
 			<br />
 			<p class="text-md max-w-xs mx-auto">
@@ -93,7 +93,7 @@
 			</div>
 			<br />
 			<div class="flex items-center">
-				<strong class="mr-2">Edit</strong>
+				<strong class="text-lg mr-2">Edit</strong>
 				<div class="text-xs bg-black rounded-xl px-2 py-1">
 					<p class="text-white">COMING SOON</p>
 				</div>

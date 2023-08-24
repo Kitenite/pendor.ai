@@ -1,16 +1,15 @@
-<script>
+<script lang="ts">
 	import Tabs from './Tabs.svelte';
 	import CodeEditor from './CodeEditor.svelte';
-	export let html = '';
-	export let css = '';
-	export let js = '';
+	import { ComponentImpl } from '$lib/models';
+	export let component: ComponentImpl = new ComponentImpl({});
 
-	let svelteCode, reactCode, htmlCode, tabItems;
+	let svelteCode, reactCode, htmlCode, tabItems: any[];
 
 	$: {
-		svelteCode = `<script>\n${js}\n<\/script>\n<style>\n${css}\n<\/style>\n${html}`;
+		svelteCode = `<script>\n${component.js}\n<\/script>\n<style>\n${component.css}\n<\/style>\n${component.html}`;
 		reactCode = `import React from 'react';\nimport './styles.css';\n\nfunction App() {\n    return (\n        <div>\n            ${html}\n        </div>\n	);\n}\n\nexport default App;`;
-		htmlCode = `<!DOCTYPE html>\n<html>\n	<head>\n    	<style>\n        ${css}\n    	<\/style>\n	<\/head>\n	<body>\n		${html}\n		<script>\n		${js}\n		<\/script>\n	<\/body>\n<\/html>`;
+		htmlCode = `<!DOCTYPE html>\n<html>\n	<head>\n    	<style>\n        ${component.css}\n    	<\/style>\n	<\/head>\n	<body>\n		${html}\n		<script>\n		${js}\n		<\/script>\n	<\/body>\n<\/html>`;
 
 		tabItems = [
 			{

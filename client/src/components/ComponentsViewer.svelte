@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Component } from '$lib/models';
+	import type { Component, ComponentImpl } from '$lib/models';
 	import { onMount } from 'svelte';
 	import Preview from './Preview.svelte';
 	import CodeEditor from './CodeEditor.svelte';
@@ -7,8 +7,8 @@
 	import Modal from './Modal.svelte';
 
 	let componentUuids: string[] = [];
-	let components: Component[] = [];
-	let activeComponent: Component;
+	let components: ComponentImpl[] = [];
+	let activeComponent: ComponentImpl;
 	let isModalOpen = false;
 
 	const getComponentsByUuids = async (uuids: string[]) => {
@@ -25,7 +25,7 @@
 		componentUuids = await DomManipulator.getComponentUuids();
 	});
 
-	const showComponentCode = (component: Component) => {
+	const showComponentCode = (component: ComponentImpl) => {
 		activeComponent = component;
 		isModalOpen = true;
 	};
@@ -36,15 +36,7 @@
 		<div
 			class="relative m-4 bg-transparent border-transparent hover:outline-blue-600 hover:outline hover:outline-2 transition-colors duration-200 rounded"
 		>
-			<Preview
-				html={component.html}
-				css={component.css}
-				js={component.js}
-				showHeader={false}
-				allowSave={false}
-				allowClear={false}
-				allowExport={false}
-			/>
+			<Preview {component} showHeader={false} allowSave={false} allowExport={false} />
 			<button class="absolute inset-0" on:click={() => showComponentCode(component)} />
 		</div>
 	{/each}
@@ -68,15 +60,16 @@
 	}}
 >
 	<Preview
-		html={activeComponent?.html}
-		css={activeComponent?.css}
-		js={activeComponent?.js}
+		component={activeComponent}
 		showHeader={false}
 		allowSave={true}
-		allowClear={false}
 		uuid={activeComponent?.uuid}
 	/>
-	<CodeEditor bind:code={activeComponent.html} language="html" filename="component-viewer.html" />
-	<CodeEditor bind:code={activeComponent.css} language="css" filename="component-viewer.css" />
-	<CodeEditor bind:code={activeComponent.js} language="javascript" filename="component-viewer.js" />
+	<CodeEditor bind:component={activeComponent} language="html" filename="component-viewer.html" />
+	<CodeEditor bind:component={activeComponent} language="css" filename="component-viewer.css" />
+	<CodeEditor
+		bind:component={activeComponent}
+		language="javascript"
+		filename="component-viewer.js"
+	/>
 </Modal>

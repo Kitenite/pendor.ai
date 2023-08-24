@@ -3,17 +3,50 @@
 	import { onDestroy, onMount, afterUpdate } from 'svelte';
 	import type * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 	import { v4 as uuidv4 } from 'uuid';
+	import type { ComponentImpl } from '$lib/models';
 
 	let editorContainer: HTMLElement;
 	let editor: Monaco.editor.IStandaloneCodeEditor;
 	let editorInitialized = false;
-
 	let monaco: typeof Monaco;
+	let code = '';
 
-	export let code = '';
+	export let component: ComponentImpl;
 	export let language = '';
 	export let filename = '';
 	export let showTitle = true;
+
+	$: if (component) {
+		switch (language) {
+			case 'html':
+				code = component.html;
+				break;
+			case 'css':
+				code = component.css;
+				break;
+			case 'javascript' || 'js':
+				code = component.js;
+				break;
+			default:
+				code = component.html;
+		}
+	}
+
+	function setComponentCode(code: string) {
+		switch (language) {
+			case 'html':
+				component.html = code;
+				break;
+			case 'css':
+				component.css = code;
+				break;
+			case 'javascript':
+				component.js = code;
+				break;
+			default:
+				component.html = code;
+		}
+	}
 
 	async function createEditor(
 		container: HTMLElement,
@@ -56,7 +89,7 @@
 			editor = await createEditor(editorContainer, code, language, filename);
 			editorInitialized = true; // Set the flag here
 			editor.onDidChangeModelContent(() => {
-				code = editor.getValue();
+				setComponentCode(editor.getValue());
 			});
 		}
 	});
@@ -70,7 +103,6 @@
 		editor?.getModel()?.dispose();
 		editor?.dispose();
 		editorInitialized = false; // Reset the flag here
-		editor = null; // Clear the editor reference
 	});
 </script>
 

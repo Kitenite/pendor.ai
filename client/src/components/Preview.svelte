@@ -1,19 +1,14 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import type { Component } from '$lib/models';
+	import { ComponentImpl } from '$lib/models';
 	import Modal from './Modal.svelte';
 	import ExportTabs from './ExportTabs.svelte';
 	import mixpanel from '$lib/mixpanel';
 	import { DomManipulator } from '$lib/dom';
 
-	export let html = '';
-	export let css = '';
-	export let js = '';
-	export let uuid = '';
-
+	export let component: ComponentImpl = new ComponentImpl({});
 	export let showHeader = true;
 	export let allowSave = true;
-	export let allowClear = true;
 	export let allowExport = true;
 	export let allowScripts = true;
 
@@ -22,12 +17,10 @@
 	let isModalOpen = false;
 
 	// Used to detect content changes
-	let prevHtml = html;
-	let prevCss = css;
-	let prevJs = js;
+	let prevHtml = component.html;
+	let prevCss = component.css;
+	let prevJs = component.js;
 	let hasContentChanged = true;
-
-	$: isEditing = html != '' || css != '' || js != '';
 
 	function updateIFrame() {
 		const page = `
@@ -35,7 +28,7 @@
 			<html lang="en">
 				<head>
 					<script src="https://cdn.tailwindcss.com"></\script>
-					<style>${css || ''}</style>
+					<style>${component.css || ''}</style>
 
 					<!-- Center content on iframe -->
 					<style>
@@ -52,8 +45,8 @@
 				</head>
 				<body>
 					<div id="root"></div>
-					<script type="text/javascript">${js || ''}</\script>
-					${html || ''}
+					<script type="text/javascript">${component.js || ''}</\script>
+					${component.html || ''}
 				</body>
 			</html>
 		`;
@@ -65,10 +58,10 @@
 
 	// Reactively update iframe when content changes
 	$: {
-		if (html !== prevHtml || css !== prevCss || js !== prevJs) {
-			prevHtml = html;
-			prevCss = css;
-			prevJs = js;
+		if (component.html !== prevHtml || component.css !== prevCss || component.js !== prevJs) {
+			prevHtml = component.html;
+			prevCss = component.css;
+			prevJs = component.js;
 			hasContentChanged = true;
 			updateIFrame();
 		} else {
@@ -77,68 +70,33 @@
 	}
 
 	async function saveComponent() {
-		const component: Component = {
-			uuid,
-			version: 1,
-			ownerIds: ['test'],
-			html,
-			css,
-			js,
-			tags: [],
-			createdAt: new Date().toISOString(),
-			prompt: ''
-		};
-
 		const respData = await DomManipulator.saveComponent(component);
-		uuid = respData.uuid;
 		hasContentChanged = false;
-
-		mixpanel.track('Save component', {
-			uuid
-		});
-	}
-
-	function clearComponent() {
-		mixpanel.track('Clear component', {
-			uuid
-		});
-		html = '';
-		css = '';
-		js = '';
+		mixpanel.track('Save component', {});
 	}
 
 	function exportComponent() {
-		mixpanel.track('Export component', {
-			uuid
-		});
+		mixpanel.track('Export component', {});
 		isModalOpen = true;
 	}
 
 	function deleteComponent() {
-		mixpanel.track('Delete component', {
-			uuid
-		});
-		DomManipulator.deleteComponentByUuid(uuid);
+		mixpanel.track('Delete component', {});
+		DomManipulator.deleteComponentByUuid(component.uuid);
 	}
 
 	function cleanComponent() {
-		mixpanel.track('Clean component', {
-			uuid
-		});
+		mixpanel.track('Clean component', {});
 		fetch('/api/components/clean', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({
-				html: html,
-				css: css
-			})
+			body: JSON.stringify({ component })
 		}).then((response) => {
 			response.json().then((data) => {
 				console.log(data);
-
-				css = data.cleanedCSS;
+				component.css = data.cleanedCSS;
 			});
 		});
 	}
@@ -217,20 +175,6 @@
 			</button>
 		{/if}
 
-		{#if allowClear}
-			<button
-				class="m-2 p-2 rounded-md flex-grow {hasContentChanged
-					? 'bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer'
-					: 'bg-gray-100 text-gray-300 cursor-not-allowed'}"
-				on:click={clearComponent}
-				disabled={!isEditing}
-			>
-				<div class="flex flex-row justify-center text-center items-center">
-					<span class="">Clear</span>
-				</div>
-			</button>
-		{/if}
-
 		<!-- TODO: Admin only -->
 		{#if false}
 			<button
@@ -272,6 +216,6 @@
 	}}
 >
 	{#if isModalOpen}
-		<ExportTabs {html} {css} {js} />
+		<ExportTabs {component} />
 	{/if}
 </Modal>
