@@ -1,0 +1,33 @@
+{
+    "os": "macOS-13.4-arm64-arm-64bit",
+    "python": "3.11.3",
+    "heartbeatAt": "2023-08-05T03:51:31.759624",
+    "startedAt": "2023-08-05T03:51:31.146030",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "<python with no main file>",
+    "git": {
+        "remote": "git@github.com:Kitenite/Ged",
+        "commit": "8c4623bf059109253533732c1c0fe622b18cd9fd"
+    },
+    "email": "hoakiet98@gmail.com",
+    "root": "/Users/kietho/workplace/ged",
+    "host": "Kiets-Macbook-Pro.local",
+    "username": "kietho",
+    "executable": "/Users/kietho/anaconda3/bin/python",
+    "cpu_count": 12,
+    "cpu_count_logical": 12,
+    "disk": {
+        "total": 926.3517189025879,
+        "used": 344.45146560668945
+    },
+    "gpuapple": {
+        "type": "arm",
+        "vendor": "Apple"
+    },
+    "memory": {
+        "total": 16.0
+    }
+}

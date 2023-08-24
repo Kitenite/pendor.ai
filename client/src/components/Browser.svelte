@@ -23,7 +23,7 @@
 					const css = event.data.css.replace(Constants.CLICKED_ELEMENT_ID, uuid);
 					selectedComponent = new ComponentImpl({ uuid, html, css, prompt: url });
 				}
-				mixpanel.track('Select from browser', {});
+				mixpanel.track('Select from browser', { url: url });
 			},
 			false
 		);
