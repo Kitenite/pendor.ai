@@ -7,7 +7,7 @@
 	export let size = 'medium';
 	export let footerButtons = [];
 
-	let modalClass = '';
+	let modalClass = 'w-screen';
 
 	// Set modal size
 	$: {
@@ -38,12 +38,12 @@
 {#if isOpen}
 	<div
 		tabindex="-1"
-		class="fixed inset-0 z-50 p-4 max-h-screen bg-gray-900 bg-opacity-50 flex items-center justify-center"
+		class="fixed inset-0 z-50 p-4 bg-gray-900 bg-opacity-50 flex items-center justify-center"
 		on:click={onClose}
 	>
 		<div
 			on:click={stopPropagation}
-			class={`max-h-screen overflow:scroll bg-white rounded-lg p-10 text-center flex flex-col ${modalClass}`}
+			class={`max-h-screen overflow-auto bg-white rounded-lg p-10 text-center flex flex-col ${modalClass}`}
 		>
 			{#if title}
 				<h3 class="text-xl font-semibold">{title}</h3>
