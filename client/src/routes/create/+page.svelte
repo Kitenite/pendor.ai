@@ -30,7 +30,13 @@
 			<Preview bind:component />
 		</div>
 		<div class=" m-2">
-			<!-- TODO: Fix to bind component instead -->
+			<span>
+				<p class="font-bold">Source</p>
+				<textarea
+					bind:value={component.prompt}
+					class="w-full rounded-lg border-gray-300 border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+				/>
+			</span>
 			<CodeEditor bind:component language="html" filename="create.html" />
 			<CodeEditor bind:component language="css" filename="create.css" />
 			<CodeEditor bind:component language="javascript" filename="create.js" />

@@ -21,7 +21,7 @@
 					const uuid = uuidv4();
 					const html = event.data.html.replace(Constants.CLICKED_ELEMENT_ID, uuid);
 					const css = event.data.css.replace(Constants.CLICKED_ELEMENT_ID, uuid);
-					selectedComponent = new ComponentImpl({ uuid, html, css });
+					selectedComponent = new ComponentImpl({ uuid, html, css, prompt: url });
 				}
 				mixpanel.track('Select from browser', {});
 			},

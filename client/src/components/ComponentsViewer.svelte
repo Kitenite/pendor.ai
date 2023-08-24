@@ -59,12 +59,14 @@
 		isModalOpen = false;
 	}}
 >
-	<Preview
-		component={activeComponent}
-		showHeader={false}
-		allowSave={true}
-		uuid={activeComponent?.uuid}
-	/>
+	<Preview component={activeComponent} showHeader={false} allowSave={true} />
+	<span>
+		<p class="font-bold">Source</p>
+		<textarea
+			bind:value={activeComponent.prompt}
+			class="w-full rounded-lg border-gray-300 border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+		/>
+	</span>
 	<CodeEditor bind:component={activeComponent} language="html" filename="component-viewer.html" />
 	<CodeEditor bind:component={activeComponent} language="css" filename="component-viewer.css" />
 	<CodeEditor

@@ -20,6 +20,7 @@
 	let prevHtml = component.html;
 	let prevCss = component.css;
 	let prevJs = component.js;
+	let prevPrompt = component.prompt;
 	let hasContentChanged = true;
 
 	function updateIFrame() {
@@ -58,10 +59,16 @@
 
 	// Reactively update iframe when content changes
 	$: {
-		if (component.html !== prevHtml || component.css !== prevCss || component.js !== prevJs) {
+		if (
+			component.html !== prevHtml ||
+			component.css !== prevCss ||
+			component.js !== prevJs ||
+			component.prompt !== prevPrompt
+		) {
 			prevHtml = component.html;
 			prevCss = component.css;
 			prevJs = component.js;
+			prevPrompt = component.prompt;
 			hasContentChanged = true;
 			updateIFrame();
 		} else {
@@ -176,7 +183,7 @@
 		{/if}
 
 		<!-- TODO: Admin only -->
-		{#if false}
+		{#if true}
 			<button
 				class="m-2 p-2 rounded-md flex-grow bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer"
 				on:click={deleteComponent}

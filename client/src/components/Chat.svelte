@@ -23,7 +23,7 @@
 				component.html = parsedFunctionCallArguments.html;
 				component.css = parsedFunctionCallArguments.css;
 				component.js = parsedFunctionCallArguments.js;
-				console.log(component);
+				component.prompt = simpleInput;
 			}
 		}
 	};
