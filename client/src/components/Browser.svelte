@@ -1,14 +1,15 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { Constants } from '$lib';
 	import mixpanel from '$lib/mixpanel';
 	import { v4 as uuidv4 } from 'uuid';
+	import { ComponentImpl } from '$lib/models';
 
 	export let url = '';
 	export let isLoading = false;
-	export let selectedHtml = '';
-	export let selectedCss = '';
-	let iframe;
+	export let selectedComponent: ComponentImpl = new ComponentImpl({});
+
+	let iframe: HTMLIFrameElement;
 
 	$: url != '' && updateIFrame();
 
@@ -18,8 +19,9 @@
 			function (event) {
 				if (event.data.type === Constants.CLICK_IDENTIFIER) {
 					const uuid = uuidv4();
-					selectedHtml = event.data.html.replace(Constants.CLICKED_ELEMENT_ID, uuid);
-					selectedCss = event.data.css.replace(Constants.CLICKED_ELEMENT_ID, uuid);
+					const html = event.data.html.replace(Constants.CLICKED_ELEMENT_ID, uuid);
+					const css = event.data.css.replace(Constants.CLICKED_ELEMENT_ID, uuid);
+					selectedComponent = new ComponentImpl({ uuid, html, css, prompt: url });
 				}
 				mixpanel.track('Select from browser', {});
 			},

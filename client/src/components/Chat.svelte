@@ -1,31 +1,29 @@
-<script>
+<script lang="ts">
 	import { useChat } from 'ai/svelte';
 	import { onMount } from 'svelte';
 	import Spinner from './Spinner.svelte';
 	import AnimatedPlaceholder from './AnimatedPlaceholder.svelte';
 	import GenerateButton from './GenerateButton.svelte';
 	import mixpanel from '$lib/mixpanel';
+	import type { ComponentImpl } from '$lib/models';
 
-	export let html = '';
-	export let css = '';
-	export let js = '';
+	export let component: ComponentImpl;
 	export let useTailwindcss = true;
 	export let simpleInput = '';
 	export let url = '';
 	export let isInputUrl = false;
 	export let isLoadingValue = false;
 
-	$: isEditing = html != '' || css != '' || js != '';
-
 	$: simpleInput != '' && handleInputChange();
 
-	const functionCallHandler = async (chatMessages, functionCall) => {
+	const functionCallHandler = async (chatMessages: any, functionCall: any) => {
 		if (functionCall.name === 'get_code') {
 			if (functionCall.arguments) {
 				const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
-				html = parsedFunctionCallArguments.html;
-				css = parsedFunctionCallArguments.css;
-				js = parsedFunctionCallArguments.js;
+				component.html = parsedFunctionCallArguments.html;
+				component.css = parsedFunctionCallArguments.css;
+				component.js = parsedFunctionCallArguments.js;
+				component.prompt = simpleInput;
 			}
 		}
 	};
@@ -34,7 +32,7 @@
 		handleInputChange();
 
 		// Automatically trigger form submit if input is pre-filled
-		if (simpleInput != '' && $input != '' && html == '' && css == '' && js == '') {
+		if (simpleInput != '' && $input != '' && !component.isPopulated) {
 			triggerFormSubmit();
 		}
 	});
@@ -61,7 +59,7 @@
 		isInputUrl = isValidUrl(simpleInput);
 
 		let processedInput;
-		if (html == '' && css == '' && js == '') {
+		if (!component.isPopulated) {
 			// Add your logic here for input change
 			processedInput = `Create the following component: ${simpleInput}. ${
 				useTailwindcss ? 'Use Tailwindcss' : ''
@@ -70,9 +68,9 @@
 			processedInput = `Update the component with this description: ${simpleInput}. ${
 				useTailwindcss ? 'Use Tailwindcss. ' : ''
 			} Component: ${JSON.stringify({
-				html,
-				css,
-				js
+				html: component.html,
+				css: component.css,
+				js: component.js
 			})}`;
 		}
 
@@ -100,7 +98,7 @@
 
 		mixpanel.track('Send chat', {
 			query: syntheticEvent.target?.query.value,
-			editing: isEditing
+			editing: component.isPopulated
 		});
 	}
 </script>
@@ -114,7 +112,7 @@
 		{#if isLoadingValue}
 			<Spinner />
 		{:else}
-			<GenerateButton buttonClassOverride="py-2" {isInputUrl} {isEditing} />
+			<GenerateButton buttonClassOverride="py-2" {isInputUrl} isEditing={component.isPopulated} />
 		{/if}
 	</form>
 </main>

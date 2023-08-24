@@ -7,6 +7,7 @@ export interface ComponentService {
     saveComponent(component: Component): Promise<string>;
     listComponentUuis(): Promise<string[]>;
     getComponentByUuid(uuid: string): Promise<Component>;
+    deleteComponentByUuid(uuid: string): Promise<string>;
 }
 
 
