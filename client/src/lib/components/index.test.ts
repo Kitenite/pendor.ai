@@ -1,6 +1,6 @@
-import type { Component } from '$lib/models';
+import type { Component } from '$lib/models/User';
 import {it, expect} from 'vitest';
-import { ComponentServiceImpl } from '.';
+import { ComponentServiceImpl } from './service';
 import { initializeApp } from 'firebase/app';
     
 it('saveComponent', async () => {

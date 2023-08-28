@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { ComponentImpl } from '$lib/models';
+	import { ComponentImpl } from '$lib/models/Component';
 	import Modal from './Modal.svelte';
 	import ExportTabs from './ExportTabs.svelte';
 	import mixpanel from '$lib/mixpanel';
@@ -20,7 +20,7 @@
 	let prevHtml = component.html;
 	let prevCss = component.css;
 	let prevJs = component.js;
-	let prevPrompt = component.prompt;
+	let prevPrompt = component.description;
 	let hasContentChanged = true;
 
 	function updateIFrame() {
@@ -63,12 +63,12 @@
 			component.html !== prevHtml ||
 			component.css !== prevCss ||
 			component.js !== prevJs ||
-			component.prompt !== prevPrompt
+			component.description !== prevPrompt
 		) {
 			prevHtml = component.html;
 			prevCss = component.css;
 			prevJs = component.js;
-			prevPrompt = component.prompt;
+			prevPrompt = component.description;
 			hasContentChanged = true;
 			updateIFrame();
 		} else {
@@ -102,7 +102,6 @@
 			body: JSON.stringify({ component })
 		}).then((response) => {
 			response.json().then((data) => {
-				console.log(data);
 				component.css = data.cleanedCSS;
 			});
 		});

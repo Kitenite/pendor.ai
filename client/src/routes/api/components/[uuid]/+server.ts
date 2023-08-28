@@ -1,5 +1,5 @@
-import { ComponentServiceImpl } from '$lib/components/index.js';
-import type { Component } from '$lib/models/index.js';
+import { ComponentServiceImpl } from '$lib/components/service.js';
+import type { Component } from '$lib/models/User.js';
 
 export async function GET({ params: {uuid} }) {
     const componentService = new ComponentServiceImpl();

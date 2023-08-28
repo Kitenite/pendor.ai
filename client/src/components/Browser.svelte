@@ -3,7 +3,7 @@
 	import { Constants } from '$lib';
 	import mixpanel from '$lib/mixpanel';
 	import { v4 as uuidv4 } from 'uuid';
-	import { ComponentImpl } from '$lib/models';
+	import { ComponentImpl } from '$lib/models/Component';
 
 	export let url = '';
 	export let isLoading = false;

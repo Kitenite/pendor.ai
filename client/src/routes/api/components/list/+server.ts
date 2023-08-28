@@ -1,4 +1,4 @@
-import { ComponentServiceImpl } from "$lib/components";
+import { ComponentServiceImpl } from "$lib/components/service";
 
 export async function GET() {
     const componentService = new ComponentServiceImpl();

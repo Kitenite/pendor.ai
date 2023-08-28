@@ -1,4 +1,4 @@
-import type { Component } from "$lib/models";
+import type { Component } from "$lib/models/User";
 
 export class DomManipulator {
 	static getDomElementFromHTML = (htmlString: string): Node | null => {

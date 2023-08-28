@@ -1,5 +1,5 @@
 import { FirebaseService } from '$lib/firebase';
-import type { Component } from '$lib/models/index.js';
+import type { Component } from '$lib/models/Component';
 import { getStorage, ref, uploadBytes, listAll, getDownloadURL, deleteObject } from "firebase/storage";
 import { v4 as uuidv4 } from 'uuid';
 

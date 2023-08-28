@@ -1,15 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 
-export interface User {
-    uuid: string;  
-    username: string;
-}
-
 export interface Component {
     // Identifiers
     uuid: string;
     version: number;
-    ownerIds: string[];  
 
     // Content
     type: string; 
@@ -18,16 +12,15 @@ export interface Component {
     js: string;
 
     // Metadata
+    description: string;  
     tags: string[];  
     createdAt: string;
-    prompt: string;  
 }
 
 export class ComponentImpl implements Component {
     // Identifiers
     uuid!: string;
     version = 0;
-    ownerIds: string[] = [];
 
     // Content
     html = '';
@@ -38,12 +31,12 @@ export class ComponentImpl implements Component {
     // Metadata
     tags: string[] = [];  
     createdAt: string;
-    prompt = '';
+    description = '';
 
     constructor(data: Partial<Component>) {
         // Using Object.assign to populate the properties
         Object.assign(this, data);
-        this.createdAt = new Date().toISOString();
+        this.createdAt = data.createdAt || new Date().toISOString();
         if (!this.uuid) {
             this.uuid = uuidv4();
         }
@@ -51,5 +44,11 @@ export class ComponentImpl implements Component {
     
     get isPopulated(): boolean {
         return this.html !== '' || this.css !== '' || this.js !== '';
+    }
+
+    // Method to handle deserialization from JSON
+    static fromJSON(json: string): ComponentImpl {
+        const data = JSON.parse(json);
+        return new ComponentImpl(data);
     }
 }

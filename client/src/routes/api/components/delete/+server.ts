@@ -1,4 +1,4 @@
-import { ComponentServiceImpl } from '$lib/components/index.js';
+import { ComponentServiceImpl } from '$lib/components/service.js';
 
 export async function POST({ request }) {
     try {

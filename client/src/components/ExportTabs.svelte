@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Tabs from './Tabs.svelte';
 	import CodeEditor from './CodeEditor.svelte';
-	import { ComponentImpl } from '$lib/models';
+	import { ComponentImpl } from '$lib/models/Component';
 	export let component: ComponentImpl = new ComponentImpl({});
 
 	let svelteCode, reactCode, htmlCode, tabItems: any[];

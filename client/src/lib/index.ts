@@ -4,4 +4,5 @@ export class Constants {
     public static readonly COMPONENTS_PAGE = '/components'
     public static readonly CLICK_IDENTIFIER = 'CLICK_IDENTIFIER';
     public static readonly CLICKED_ELEMENT_ID = 'CLICKED_ELEMENT_ID';
+    public static readonly EDIT_COMPONENT_FUNCTION_NAME = 'edit_component';
 }
